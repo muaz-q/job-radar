@@ -1,0 +1,51 @@
+{
+  "wellfound": {
+    "enabled": true,
+    "searches": [
+      "role/l/software-engineer/bangalore",
+      "role/l/backend-engineer/bangalore",
+      "role/l/machine-learning-engineer/bangalore",
+      "role/l/full-stack-engineer/bangalore",
+      "role/l/data-scientist/bangalore",
+      "role/r/software-engineer",
+      "role/r/machine-learning-engineer"
+    ],
+    "request_delay_seconds": 3
+  },
+  "companies": {
+    "enabled": true,
+    "india_only": true,
+    "request_delay_seconds": 1,
+    "boards": [
+      { "ats": "greenhouse", "slug": "groww", "name": "Groww" },
+      { "ats": "greenhouse", "slug": "razorpaysoftwareprivatelimited", "name": "Razorpay" },
+      { "ats": "greenhouse", "slug": "postman", "name": "Postman" },
+      { "ats": "greenhouse", "slug": "rubrik", "name": "Rubrik" },
+      { "ats": "greenhouse", "slug": "druva", "name": "Druva" },
+      { "ats": "greenhouse", "slug": "hackerrank", "name": "HackerRank" },
+      { "ats": "greenhouse", "slug": "inmobi", "name": "InMobi" },
+      { "ats": "greenhouse", "slug": "stripe", "name": "Stripe" },
+      { "ats": "greenhouse", "slug": "coinbase", "name": "Coinbase" },
+      { "ats": "lever", "slug": "cred", "name": "CRED" },
+      { "ats": "lever", "slug": "meesho", "name": "Meesho" },
+      { "ats": "lever", "slug": "zeta", "name": "Zeta" },
+      { "ats": "lever", "slug": "paytm", "name": "Paytm" },
+      { "ats": "lever", "slug": "hevodata", "name": "Hevo Data" },
+      { "ats": "lever", "slug": "fampay", "name": "FamPay" },
+      { "ats": "ashby", "slug": "sarvam", "name": "Sarvam AI" },
+      { "ats": "ashby", "slug": "atlan", "name": "Atlan" },
+      { "ats": "ashby", "slug": "plane", "name": "Plane" },
+      { "ats": "ashby", "slug": "composio", "name": "Composio" },
+      { "ats": "ashby", "slug": "smallest", "name": "Smallest AI" }
+    ]
+  },
+  "unstop": {
+    "enabled": true,
+    "max_pages": 30,
+    "request_delay_seconds": 2
+  },
+  "mock": {
+    "enabled": false,
+    "emit_new_job_each_scan": false
+  }
+}

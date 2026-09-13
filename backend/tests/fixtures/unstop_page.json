@@ -1,0 +1,866 @@
+{
+ "data": {
+  "current_page": 1,
+  "data": [
+   {
+    "id": 1755252,
+    "public_url": "internships/hr-intern-alevoz-solutions-1755252",
+    "title": "HR Internship",
+    "organization_id": 1948922,
+    "type": "jobs",
+    "subtype": "internships",
+    "regn_open": 1,
+    "updated_at": "2026-09-13T19:31:13+05:30",
+    "region": "online",
+    "visibility": "public",
+    "details": "<p class=\"PDq2pG_selectionAnchorContainer\" data-start=\"166\" data-end=\"191\"><strong>Responsibilities:</strong></p>\n<ul>\n<li data-section-id=\"1ox1kye\" data-start=\"192\" data-end=\"299\">Source candidates through job portals, LinkedIn, WhatsApp, social media, and other recruitment channels.</li>\n<li data-section-id=\"s9o5uu\" data-start=\"300\" data-end=\"389\">Screen candidates based on job requirements and ",
+    "short_id": "x2nASeq",
+    "logoUrl2": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/6aa6aca978164_organisation_image-8VBOv7tIlW1510024622Jlo69U2VJK.png",
+    "organisation": {
+     "id": 1948922,
+     "name": "Alevoz Solutions",
+     "public_url": "c/alevoz-solutions-1948922",
+     "logoUrl": "https://d8it4huxumps7.cloudfront.net/images/partners/new_organisation_image-8VBOv7tIlW1510024622Jlo69U2VJK.png",
+     "logoUrl2": "https://d8it4huxumps7.cloudfront.net/images/partners/new_organisation_image-8VBOv7tIlW1510024622Jlo69U2VJK.png",
+     "show_evaluator_login_link": false,
+     "official_email_domains": null,
+     "tier": null
+    },
+    "seo_url": "https://unstop.com/internships/hr-intern-alevoz-solutions-1755252",
+    "status": "LIVE",
+    "tags": [],
+    "thumb": null,
+    "isPaid": false,
+    "short_url": "https://unstop.com/o/x2nASeq",
+    "workfunction": [
+     {
+      "id": 1940,
+      "name": "HR Operations",
+      "description": "",
+      "created_at": "2026-02-06T23:31:46+05:30",
+      "updated_at": "2026-02-06T23:31:46+05:30",
+      "work_function_name": null,
+      "batch_id": 11,
+      "pivot": {
+       "entity_id": 1755252,
+       "subject_id": 1940,
+       "id": 6098776,
+       "ai_generated": false
+      }
+     }
+    ],
+    "required_skills": [
+     {
+      "id": 645802,
+      "skill": "Communication Skills",
+      "skill_name": "Communication Skills",
+      "pivot": {
+       "entity_id": 1755252,
+       "subject_id": 645802,
+       "id": 6098771,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 646448,
+      "skill": "Interview Scheduling",
+      "skill_name": "Interview Scheduling",
+      "pivot": {
+       "entity_id": 1755252,
+       "subject_id": 646448,
+       "id": 6098772,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 646449,
+      "skill": "Interviewing Skills",
+      "skill_name": "Interviewing Skills",
+      "pivot": {
+       "entity_id": 1755252,
+       "subject_id": 646449,
+       "id": 6098773,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 647401,
+      "skill": "Spreadsheet Software (Excel, Google Sheets)",
+      "skill_name": "Spreadsheet Software (Excel, Google Sheets)",
+      "pivot": {
+       "entity_id": 1755252,
+       "subject_id": 647401,
+       "id": 6098774,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 645156,
+      "skill": "Talent Sourcing",
+      "skill_name": "Talent Sourcing",
+      "pivot": {
+       "entity_id": 1755252,
+       "subject_id": 645156,
+       "id": 6098775,
+       "ai_generated": true
+      }
+     }
+    ],
+    "locations": [
+     {
+      "id": 1844081,
+      "city": "Mohali",
+      "state": "Punjab",
+      "country": "India",
+      "addressable_id": 1755252,
+      "addressable_type": "App\\Model\\Opportunity"
+     }
+    ],
+    "jobDetail": {
+     "entity_id": 1755252,
+     "max_salary": null,
+     "currency": "fa-rupee",
+     "locations": [
+      "Mohali"
+     ],
+     "type": "wfh",
+     "min_salary": null,
+     "show_salary": 1,
+     "min_experience": null,
+     "max_experience": null,
+     "timing": "part_time",
+     "paid_unpaid": "unpaid",
+     "pay_in": "monthly",
+     "not_disclosed": false
+    },
+    "end_date": "2026-09-27T00:00:00+05:30",
+    "approved_date": "2026-09-13 19:30:38 GMT+0530",
+    "viewsCount": 1743,
+    "registerCount": 2
+   },
+   {
+    "id": 1755281,
+    "public_url": "internships/graphic-designer-bhaiar-1755281",
+    "title": "Graphic Designer Internship",
+    "organization_id": 1973881,
+    "type": "jobs",
+    "subtype": "internships",
+    "regn_open": 1,
+    "updated_at": "2026-09-13T19:42:39+05:30",
+    "region": "online",
+    "visibility": "public",
+    "details": "<p class=\"p1\"><strong>Responsibilities:</strong></p>\n<ul>\n<li>\n<p>Design social media posts, banners, ads, posters, presentations, and marketing creatives</p>\n</li>\n<li>\n<p>Create visual concepts aligned with brand guidelines and campaign goals</p>\n</li>\n<li>\n<p>Work on branding elements such as typography, color systems, icons, and layouts</p>\n</li>\n<li>\n<p>Collaborate with marketing, product, an",
+    "short_id": "iRHvTux",
+    "logoUrl2": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/6aa6af57bf9c8_organisation_image-qE6yGNBupN184762063xukp7tH8Vx.png",
+    "organisation": {
+     "id": 1973881,
+     "name": "Bhai.AR",
+     "public_url": "c/bhaiar-1973881",
+     "logoUrl": "https://d8it4huxumps7.cloudfront.net/images/partners/new_organisation_image-qE6yGNBupN184762063xukp7tH8Vx.png",
+     "logoUrl2": "https://d8it4huxumps7.cloudfront.net/images/partners/new_organisation_image-qE6yGNBupN184762063xukp7tH8Vx.png",
+     "show_evaluator_login_link": false,
+     "official_email_domains": null,
+     "tier": null
+    },
+    "seo_url": "https://unstop.com/internships/graphic-designer-bhaiar-1755281",
+    "status": "LIVE",
+    "tags": [],
+    "thumb": null,
+    "isPaid": false,
+    "short_url": "https://unstop.com/o/iRHvTux",
+    "workfunction": [
+     {
+      "id": 1909,
+      "name": "Graphic Design",
+      "description": "",
+      "created_at": "2026-02-06T23:31:46+05:30",
+      "updated_at": "2026-02-06T23:31:46+05:30",
+      "work_function_name": null,
+      "batch_id": 11,
+      "pivot": {
+       "entity_id": 1755281,
+       "subject_id": 1909,
+       "id": 6098969,
+       "ai_generated": true
+      }
+     }
+    ],
+    "required_skills": [
+     {
+      "id": 645487,
+      "skill": "Adobe Illustrator",
+      "skill_name": "Adobe Illustrator",
+      "pivot": {
+       "entity_id": 1755281,
+       "subject_id": 645487,
+       "id": 6098964,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 645492,
+      "skill": "Adobe Photoshop",
+      "skill_name": "Adobe Photoshop",
+      "pivot": {
+       "entity_id": 1755281,
+       "subject_id": 645492,
+       "id": 6098965,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 647599,
+      "skill": "Typography",
+      "skill_name": "Typography",
+      "pivot": {
+       "entity_id": 1755281,
+       "subject_id": 647599,
+       "id": 6098966,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 647677,
+      "skill": "Visual Design Principles",
+      "skill_name": "Visual Design Principles",
+      "pivot": {
+       "entity_id": 1755281,
+       "subject_id": 647677,
+       "id": 6098967,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 643359,
+      "skill": "Branding",
+      "skill_name": "Branding",
+      "pivot": {
+       "entity_id": 1755281,
+       "subject_id": 643359,
+       "id": 6098968,
+       "ai_generated": true
+      }
+     }
+    ],
+    "locations": [
+     {
+      "id": 1844091,
+      "city": "Bangalore Urban",
+      "state": "Karnataka",
+      "country": "India",
+      "addressable_id": 1755281,
+      "addressable_type": "App\\Model\\Opportunity"
+     }
+    ],
+    "jobDetail": {
+     "entity_id": 1755281,
+     "max_salary": 40000,
+     "currency": "fa-rupee",
+     "locations": [
+      "Bangalore Urban"
+     ],
+     "type": "hybrid",
+     "min_salary": 40000,
+     "show_salary": 1,
+     "min_experience": null,
+     "max_experience": null,
+     "timing": "full_time",
+     "paid_unpaid": "paid",
+     "pay_in": "monthly",
+     "not_disclosed": false
+    },
+    "end_date": "2026-09-27T00:00:00+05:30",
+    "approved_date": "2026-09-13 19:42:06 GMT+0530",
+    "viewsCount": 3696,
+    "registerCount": 4
+   },
+   {
+    "id": 1755186,
+    "public_url": "internships/lawyer-internship-bhaiar-1755186",
+    "title": "Lawyer Internship",
+    "organization_id": 1973881,
+    "type": "jobs",
+    "subtype": "internships",
+    "regn_open": 1,
+    "updated_at": "2026-09-13T16:15:47+05:30",
+    "region": "online",
+    "visibility": "public",
+    "details": "<p><strong>About the Role</strong></p>\n<p>You will work closely with the legal team on real legal matters, research, documentation, contracts, and compliance. From reviewing agreements to supporting legal strategy, you will gain hands-on exposure to how legal decisions are made in a fast-moving organization.</p>\n<p><strong>What You'll Do</strong></p>\n<ul>\n<li>Conduct legal research on laws, regula",
+    "short_id": "obLROCX",
+    "logoUrl2": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/6aa67ebd1ad79_organisation_image-qE6yGNBupN184762063xukp7tH8Vx.png",
+    "organisation": {
+     "id": 1973881,
+     "name": "Bhai.AR",
+     "public_url": "c/bhaiar-1973881",
+     "logoUrl": "https://d8it4huxumps7.cloudfront.net/images/partners/new_organisation_image-qE6yGNBupN184762063xukp7tH8Vx.png",
+     "logoUrl2": "https://d8it4huxumps7.cloudfront.net/images/partners/new_organisation_image-qE6yGNBupN184762063xukp7tH8Vx.png",
+     "show_evaluator_login_link": false,
+     "official_email_domains": null,
+     "tier": null
+    },
+    "seo_url": "https://unstop.com/internships/lawyer-internship-bhaiar-1755186",
+    "status": "LIVE",
+    "tags": [],
+    "thumb": null,
+    "isPaid": false,
+    "short_url": "https://unstop.com/o/obLROCX",
+    "workfunction": [
+     {
+      "id": 1978,
+      "name": "Policy & Research Support",
+      "description": "",
+      "created_at": "2026-02-06T23:31:46+05:30",
+      "updated_at": "2026-02-06T23:31:46+05:30",
+      "work_function_name": null,
+      "batch_id": 11,
+      "pivot": {
+       "entity_id": 1755186,
+       "subject_id": 1978,
+       "id": 6097601,
+       "ai_generated": false
+      }
+     }
+    ],
+    "required_skills": [
+     {
+      "id": 645859,
+      "skill": "Contract Law",
+      "skill_name": "Contract Law",
+      "pivot": {
+       "entity_id": 1755186,
+       "subject_id": 645859,
+       "id": 6097596,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 645870,
+      "skill": "Corporate Law",
+      "skill_name": "Corporate Law",
+      "pivot": {
+       "entity_id": 1755186,
+       "subject_id": 645870,
+       "id": 6097597,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 646556,
+      "skill": "Legal Document Drafting",
+      "skill_name": "Legal Document Drafting",
+      "pivot": {
+       "entity_id": 1755186,
+       "subject_id": 646556,
+       "id": 6097598,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 646563,
+      "skill": "Legal Research",
+      "skill_name": "Legal Research",
+      "pivot": {
+       "entity_id": 1755186,
+       "subject_id": 646563,
+       "id": 6097599,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 647759,
+      "skill": "Written Communication",
+      "skill_name": "Written Communication",
+      "pivot": {
+       "entity_id": 1755186,
+       "subject_id": 647759,
+       "id": 6097600,
+       "ai_generated": true
+      }
+     }
+    ],
+    "locations": [
+     {
+      "id": 1843977,
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "country": "India",
+      "addressable_id": 1755186,
+      "addressable_type": "App\\Model\\Opportunity"
+     }
+    ],
+    "jobDetail": {
+     "entity_id": 1755186,
+     "max_salary": 40000,
+     "currency": "fa-rupee",
+     "locations": [
+      "Bangalore"
+     ],
+     "type": "hybrid",
+     "min_salary": 40000,
+     "show_salary": 1,
+     "min_experience": null,
+     "max_experience": null,
+     "timing": "full_time",
+     "paid_unpaid": "paid",
+     "pay_in": "monthly",
+     "not_disclosed": false
+    },
+    "end_date": "2026-09-27T00:00:00+05:30",
+    "approved_date": "2026-09-13 16:15:47 GMT+0530",
+    "viewsCount": 2269,
+    "registerCount": 0
+   },
+   {
+    "id": 1755267,
+    "public_url": "internships/campus-ambassador-internship-yhills-1755267",
+    "title": "Campus Ambassador Internship",
+    "organization_id": 210908,
+    "type": "jobs",
+    "subtype": "internships",
+    "regn_open": 1,
+    "updated_at": "2026-09-13T19:36:19+05:30",
+    "region": "online",
+    "visibility": "public",
+    "details": "<div class=\"blue_un-border-before comp-detail un_editor_text_live expanded\">\n<p><strong>Responsibilities of the Intern:</strong></p>\n<ul>\n<li>Develop and maintain relationships with customers, partners, and other stakeholders.</li>\n<li>Represent the brand at events, conferences, and other promotional activities.</li>\n<li>Develop and execute marketing campaigns to promote the brand.</li>\n<li>Monito",
+    "short_id": "yoxKGdt",
+    "logoUrl2": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-6aa6a461e4c8c_logo_yhills.jpeg",
+    "organisation": {
+     "id": 210908,
+     "name": "YHills",
+     "public_url": "c/yhills-recruiter-career-interview-selection-process-job-profile-articles-videos-210908",
+     "logoUrl": "",
+     "logoUrl2": "",
+     "show_evaluator_login_link": false,
+     "official_email_domains": null,
+     "tier": 3
+    },
+    "seo_url": "https://unstop.com/internships/campus-ambassador-internship-yhills-1755267",
+    "status": "LIVE",
+    "tags": [],
+    "thumb": null,
+    "isPaid": false,
+    "short_url": "https://unstop.com/o/yoxKGdt",
+    "workfunction": [
+     {
+      "id": 1976,
+      "name": "Campus Ambassador",
+      "description": "",
+      "created_at": "2026-02-06T23:31:46+05:30",
+      "updated_at": "2026-02-06T23:31:46+05:30",
+      "work_function_name": null,
+      "batch_id": 11,
+      "pivot": {
+       "entity_id": 1755267,
+       "subject_id": 1976,
+       "id": 6098828,
+       "ai_generated": true
+      }
+     }
+    ],
+    "required_skills": [
+     {
+      "id": 645802,
+      "skill": "Communication Skills",
+      "skill_name": "Communication Skills",
+      "pivot": {
+       "entity_id": 1755267,
+       "subject_id": 645802,
+       "id": 6098823,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 647347,
+      "skill": "Social Media Marketing (SMM)",
+      "skill_name": "Social Media Marketing (SMM)",
+      "pivot": {
+       "entity_id": 1755267,
+       "subject_id": 647347,
+       "id": 6098824,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 644324,
+      "skill": "Marketing Campaign Planning",
+      "skill_name": "Marketing Campaign Planning",
+      "pivot": {
+       "entity_id": 1755267,
+       "subject_id": 644324,
+       "id": 6098825,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 644800,
+      "skill": "Relationship Management",
+      "skill_name": "Relationship Management",
+      "pivot": {
+       "entity_id": 1755267,
+       "subject_id": 644800,
+       "id": 6098826,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 645012,
+      "skill": "Social Media Content Creation",
+      "skill_name": "Social Media Content Creation",
+      "pivot": {
+       "entity_id": 1755267,
+       "subject_id": 645012,
+       "id": 6098827,
+       "ai_generated": true
+      }
+     }
+    ],
+    "locations": [],
+    "jobDetail": {
+     "entity_id": 1755267,
+     "max_salary": 19500,
+     "currency": "fa-rupee",
+     "locations": [],
+     "type": "wfh",
+     "min_salary": 2000,
+     "show_salary": 1,
+     "min_experience": null,
+     "max_experience": null,
+     "timing": "full_time",
+     "paid_unpaid": "paid",
+     "pay_in": "monthly",
+     "not_disclosed": false
+    },
+    "end_date": "2026-09-20T23:58:00+05:30",
+    "approved_date": "2026-09-13 19:35:50 GMT+0530",
+    "viewsCount": 2526,
+    "registerCount": 29
+   },
+   {
+    "id": 1749584,
+    "public_url": "internships/campus-ambassador-programme-iim-ahmedabad-1749584",
+    "title": "Campus Ambassador Programme",
+    "organization_id": 584,
+    "type": "jobs",
+    "subtype": "internships",
+    "regn_open": 1,
+    "updated_at": "2026-09-07T16:29:33+05:30",
+    "region": "online",
+    "visibility": "public",
+    "details": "<p><strong>About TRBS</strong></p>\n<p>The Red Brick Summit (TRBS) is IIM Ahmedabad's flagship management fest, bringing together students, business leaders, industry experts, and aspiring young professionals through a diverse range of competitions, workshops, and interactions.</p>\n<p>With 20+ events, 10+ workshops, 30+ sponsors, 15K+ footfall and ₹12L+ in cash prizes, TRBS provides a platform for ",
+    "short_id": "u5nmjtH",
+    "logoUrl2": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-6a9b81fa4666d_6cec71f3-02d0-43e5-b414-fe375546ce42_shubham_shashikant_dehankar.png",
+    "organisation": {
+     "id": 584,
+     "name": "Indian Institute of Management (IIM), Ahmedabad",
+     "public_url": "c/indian-institute-of-management-iim-ahmedabad-placement-interview-competitions-articles-videos-584",
+     "logoUrl": "https://d8it4huxumps7.cloudfront.net/images/partners/partners75/6384470c2685b_Logo_of_IIM_Ahmedabad__2022_.png",
+     "logoUrl2": "https://d8it4huxumps7.cloudfront.net/images/partners/partners125/6384470c2685b_Logo_of_IIM_Ahmedabad__2022_.png",
+     "show_evaluator_login_link": false,
+     "official_email_domains": "@iima.ac.in,@unstop.com",
+     "tier": null
+    },
+    "seo_url": "https://unstop.com/internships/campus-ambassador-programme-iim-ahmedabad-1749584",
+    "status": "LIVE",
+    "tags": [],
+    "thumb": null,
+    "isPaid": false,
+    "short_url": "https://unstop.com/o/u5nmjtH",
+    "workfunction": [
+     {
+      "id": 1976,
+      "name": "Campus Ambassador",
+      "description": "",
+      "created_at": "2026-02-06T23:31:46+05:30",
+      "updated_at": "2026-02-06T23:31:46+05:30",
+      "work_function_name": null,
+      "batch_id": 11,
+      "pivot": {
+       "entity_id": 1749584,
+       "subject_id": 1976,
+       "id": 6030711,
+       "ai_generated": true
+      }
+     }
+    ],
+    "required_skills": [
+     {
+      "id": 645802,
+      "skill": "Communication Skills",
+      "skill_name": "Communication Skills",
+      "pivot": {
+       "entity_id": 1749584,
+       "subject_id": 645802,
+       "id": 6030707,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 646408,
+      "skill": "Initiative",
+      "skill_name": "Initiative",
+      "pivot": {
+       "entity_id": 1749584,
+       "subject_id": 646408,
+       "id": 6030708,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 647346,
+      "skill": "Social Media Management",
+      "skill_name": "Social Media Management",
+      "pivot": {
+       "entity_id": 1749584,
+       "subject_id": 647346,
+       "id": 6030709,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 643783,
+      "skill": "Event Marketing",
+      "skill_name": "Event Marketing",
+      "pivot": {
+       "entity_id": 1749584,
+       "subject_id": 643783,
+       "id": 6030710,
+       "ai_generated": false
+      }
+     }
+    ],
+    "locations": [],
+    "jobDetail": {
+     "entity_id": 1749584,
+     "max_salary": null,
+     "currency": "fa-rupee",
+     "locations": [],
+     "type": "wfh",
+     "min_salary": null,
+     "show_salary": 1,
+     "min_experience": null,
+     "max_experience": null,
+     "timing": "full_time",
+     "paid_unpaid": "unpaid",
+     "pay_in": "monthly",
+     "not_disclosed": false
+    },
+    "end_date": "2026-09-15T23:59:00+05:30",
+    "approved_date": "2026-09-05 10:01:23 GMT+0530",
+    "viewsCount": 72843,
+    "registerCount": 355
+   },
+   {
+    "id": 1755157,
+    "public_url": "internships/peer-ambassador-internship-stellaraa-edutech-1755157",
+    "title": "Peer Ambassador Internship",
+    "organization_id": 1284158,
+    "type": "jobs",
+    "subtype": "internships",
+    "regn_open": 1,
+    "updated_at": "2026-09-13T16:25:51+05:30",
+    "region": "online",
+    "visibility": "public",
+    "details": "<p><strong>Job Summary</strong></p>\n<p>We are looking for enthusiastic and well-connected college students to join our team as Peer Ambassadors. In this role, you will create and manage WhatsApp groups with college students, share important updates, and help build an active student community from the comfort of your home.</p>\n<p><strong>Key Responsibilities</strong></p>\n<ul>\n<li>Create and manage ",
+    "short_id": "MGmqlzk",
+    "logoUrl2": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/6aa680f0e8260_organisation_image-PP1DIrqeQL1807929501hXVS7boRka.png",
+    "organisation": {
+     "id": 1284158,
+     "name": "Stellaraa EduTech",
+     "public_url": "c/stellaraa-edutech-1284158",
+     "logoUrl": "https://d8it4huxumps7.cloudfront.net/images/partners/new_organisation_image-PP1DIrqeQL1807929501hXVS7boRka.png",
+     "logoUrl2": "https://d8it4huxumps7.cloudfront.net/images/partners/new_organisation_image-PP1DIrqeQL1807929501hXVS7boRka.png",
+     "show_evaluator_login_link": false,
+     "official_email_domains": null,
+     "tier": null
+    },
+    "seo_url": "https://unstop.com/internships/peer-ambassador-internship-stellaraa-edutech-1755157",
+    "status": "LIVE",
+    "tags": [],
+    "thumb": null,
+    "isPaid": false,
+    "short_url": "https://unstop.com/o/MGmqlzk",
+    "workfunction": [
+     {
+      "id": 1976,
+      "name": "Campus Ambassador",
+      "description": "",
+      "created_at": "2026-02-06T23:31:46+05:30",
+      "updated_at": "2026-02-06T23:31:46+05:30",
+      "work_function_name": null,
+      "batch_id": 11,
+      "pivot": {
+       "entity_id": 1755157,
+       "subject_id": 1976,
+       "id": 6097655,
+       "ai_generated": true
+      }
+     }
+    ],
+    "required_skills": [
+     {
+      "id": 645802,
+      "skill": "Communication Skills",
+      "skill_name": "Communication Skills",
+      "pivot": {
+       "entity_id": 1755157,
+       "subject_id": 645802,
+       "id": 6097650,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 645803,
+      "skill": "Community Engagement",
+      "skill_name": "Community Engagement",
+      "pivot": {
+       "entity_id": 1755157,
+       "subject_id": 645803,
+       "id": 6097651,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 645978,
+      "skill": "Digital Communication",
+      "skill_name": "Digital Communication",
+      "pivot": {
+       "entity_id": 1755157,
+       "subject_id": 645978,
+       "id": 6097652,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 646808,
+      "skill": "Networking (LinkedIn)",
+      "skill_name": "Networking (LinkedIn)",
+      "pivot": {
+       "entity_id": 1755157,
+       "subject_id": 646808,
+       "id": 6097653,
+       "ai_generated": true
+      }
+     },
+     {
+      "id": 647282,
+      "skill": "Self-Motivation",
+      "skill_name": "Self-Motivation",
+      "pivot": {
+       "entity_id": 1755157,
+       "subject_id": 647282,
+       "id": 6097654,
+       "ai_generated": true
+      }
+     }
+    ],
+    "locations": [],
+    "jobDetail": {
+     "entity_id": 1755157,
+     "max_salary": 4500,
+     "currency": "fa-rupee",
+     "locations": [],
+     "type": "wfh",
+     "min_salary": 2250,
+     "show_salary": 1,
+     "min_experience": null,
+     "max_experience": null,
+     "timing": "part_time",
+     "paid_unpaid": "paid",
+     "pay_in": "monthly",
+     "not_disclosed": false
+    },
+    "end_date": "2026-09-27T23:59:00+05:30",
+    "approved_date": "2026-09-13 16:25:51 GMT+0530",
+    "viewsCount": 3503,
+    "registerCount": 20
+   }
+  ],
+  "first_page_url": "https://unstop.com/api/public/opportunity/search-result?&opportunity=internships&per_page=30&oppstatus=open&page=1",
+  "from": 1,
+  "last_page": 1,
+  "last_page_url": "https://unstop.com/api/public/opportunity/search-result?&opportunity=internships&per_page=30&oppstatus=open&page=30",
+  "links": [
+   {
+    "url": null,
+    "label": "&laquo; Previous",
+    "active": false
+   },
+   {
+    "url": "https://unstop.com/api/public/opportunity/search-result?&opportunity=internships&per_page=30&oppstatus=open&page=1",
+    "label": "1",
+    "active": true
+   },
+   {
+    "url": "https://unstop.com/api/public/opportunity/search-result?&opportunity=internships&per_page=30&oppstatus=open&page=2",
+    "label": "2",
+    "active": false
+   },
+   {
+    "url": "https://unstop.com/api/public/opportunity/search-result?&opportunity=internships&per_page=30&oppstatus=open&page=3",
+    "label": "3",
+    "active": false
+   },
+   {
+    "url": "https://unstop.com/api/public/opportunity/search-result?&opportunity=internships&per_page=30&oppstatus=open&page=4",
+    "label": "4",
+    "active": false
+   },
+   {
+    "url": "https://unstop.com/api/public/opportunity/search-result?&opportunity=internships&per_page=30&oppstatus=open&page=5",
+    "label": "5",
+    "active": false
+   },
+   {
+    "url": "https://unstop.com/api/public/opportunity/search-result?&opportunity=internships&per_page=30&oppstatus=open&page=6",
+    "label": "6",
+    "active": false
+   },
+   {
+    "url": "https://unstop.com/api/public/opportunity/search-result?&opportunity=internships&per_page=30&oppstatus=open&page=7",
+    "label": "7",
+    "active": false
+   },
+   {
+    "url": "https://unstop.com/api/public/opportunity/search-result?&opportunity=internships&per_page=30&oppstatus=open&page=8",
+    "label": "8",
+    "active": false
+   },
+   {
+    "url": "https://unstop.com/api/public/opportunity/search-result?&opportunity=internships&per_page=30&oppstatus=open&page=9",
+    "label": "9",
+    "active": false
+   },
+   {
+    "url": "https://unstop.com/api/public/opportunity/search-result?&opportunity=internships&per_page=30&oppstatus=open&page=10",
+    "label": "10",
+    "active": false
+   },
+   {
+    "url": null,
+    "label": "...",
+    "active": false
+   },
+   {
+    "url": "https://unstop.com/api/public/opportunity/search-result?&opportunity=internships&per_page=30&oppstatus=open&page=29",
+    "label": "29",
+    "active": false
+   },
+   {
+    "url": "https://unstop.com/api/public/opportunity/search-result?&opportunity=internships&per_page=30&oppstatus=open&page=30",
+    "label": "30",
+    "active": false
+   },
+   {
+    "url": "https://unstop.com/api/public/opportunity/search-result?&opportunity=internships&per_page=30&oppstatus=open&page=2",
+    "label": "Next &raquo;",
+    "active": false
+   }
+  ],
+  "next_page_url": "https://unstop.com/api/public/opportunity/search-result?&opportunity=internships&per_page=30&oppstatus=open&page=2",
+  "path": "https://unstop.com/api/public/opportunity/search-result?",
+  "per_page": 30,
+  "prev_page_url": null,
+  "to": 28,
+  "total": 894
+ }
+}
