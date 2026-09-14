@@ -62,8 +62,8 @@ export default function NotificationsPage({ refreshKey }) {
                   <time className="time">{clockTime(n.created_at)}</time>
                   <div className="job-text">
                     {url
-                      ? <a className="job-company" style={{ fontWeight: 600 }} href={url} target="_blank" rel="noopener noreferrer">{title}</a>
-                      : <span className="job-company" style={{ fontWeight: 600 }}>{title}</span>}
+                      ? <a className="job-company history-title" href={url} target="_blank" rel="noopener noreferrer">{title}</a>
+                      : <span className="job-company history-title">{title}</span>}
                     <span className="job-meta">{company}</span>
                   </div>
                   <StatusPill notification={n} />

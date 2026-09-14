@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SearchIcon } from "../components/Icons";
 import JobRow from "../components/JobCard";
-import { Empty, ErrorBox, Loading } from "../components/Status";
+import { Empty, ErrorBox, SkeletonList } from "../components/Status";
 import { api } from "../services/api";
 import { timeAgo } from "../services/format";
 
@@ -115,19 +115,20 @@ export default function JobsPage({ refreshKey }) {
         </div>
       )}
 
-      {loading && <Loading />}
+      {loading && jobs.items.length === 0 && <SkeletonList />}
+      {loading && jobs.items.length > 0 && <p className="footnote" style={{ textAlign: "center" }}>Loading…</p>}
       {!loading && !error && jobs.items.length === 0 && (
         <div className="group">
           {anyFilter
             ? <Empty title="No results">Try a different search or clear a filter.</Empty>
             : view === "matching"
               ? <Empty title="No matches yet">Nothing new fits your filters. Widen them in <a href="#/settings">Settings</a>, or look through All.</Empty>
-              : <Empty title="No jobs yet">Press Scan now to check every source.</Empty>}
+              : <Empty title="No jobs yet">Press Scan Now to check every source.</Empty>}
         </div>
       )}
       {!loading && jobs.items.length < jobs.total && (
         <div className="center">
-          <button className="btn" onClick={() => load(jobs.items.length)}>Show more</button>
+          <button className="btn" onClick={() => load(jobs.items.length)}>Show More</button>
         </div>
       )}
     </section>

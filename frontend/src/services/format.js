@@ -25,7 +25,7 @@ export function timeUntil(iso, now = Date.now()) {
 }
 
 export function clockTime(iso) {
-  return new Date(iso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  return new Date(iso).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
 }
 
 export function dayLabel(iso, now = new Date()) {

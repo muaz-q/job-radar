@@ -35,7 +35,7 @@ export default function ScanButton({ onScanned }) {
         <span className={state.error ? "scan-msg error" : "scan-msg"} title={state.detail} role="status">{state.message}</span>
       )}
       <button className="btn btn-primary" onClick={scan} disabled={state.busy}>
-        {state.busy ? "Scanning…" : "Scan now"}
+        {state.busy ? "Scanning…" : "Scan Now"}
       </button>
     </>
   );

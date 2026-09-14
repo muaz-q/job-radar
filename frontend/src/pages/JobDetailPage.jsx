@@ -9,7 +9,7 @@ import { timeAgo } from "../services/format";
 function Fact({ label, children }) {
   return (
     <div className="row plain">
-      <dl className="kv" style={{ flex: 1, margin: 0 }}>
+      <dl className="kv">
         <dt>{label}</dt>
         <dd>{children}</dd>
       </dl>
@@ -41,7 +41,7 @@ export default function JobDetailPage({ id }) {
               <p className="detail-company">{job.company}</p>
               <p className="page-sub">{job.location ?? "Location not listed"} · {postedText(job)}</p>
             </div>
-            <ViewJobButton url={job.url} size="lg" label="View job posting" />
+            <ViewJobButton url={job.url} size="lg" label="View Job Posting" />
           </header>
 
           <div className="group">

@@ -122,7 +122,7 @@ export default function SettingsPage({ notifier }) {
               {permission === "denied" && "Blocked. Allow notifications for this site from the address bar."}
               {permission === "unsupported" && "This browser doesn't support notifications"}
             </span>
-            {permission === "granted" && <button type="button" className="btn btn-sm" onClick={sendTest}>Send test</button>}
+            {permission === "granted" && <button type="button" className="btn btn-sm" onClick={sendTest}>Send Test</button>}
             {permission === "default" && <button type="button" className="btn btn-tinted btn-sm" onClick={requestPermission}>Allow</button>}
           </div>
         </div>
