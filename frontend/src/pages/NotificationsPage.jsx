@@ -6,11 +6,11 @@ import { clockTime, dayLabel, safeUrl } from "../services/format";
 function StatusPill({ notification: n }) {
   const telegram = n.channel === "telegram";
   const delivered = n.status === "delivered";
-  const label = telegram ? (delivered ? "sent to Telegram" : "not sent yet") : (delivered ? "shown" : "pending");
+  const label = telegram ? (delivered ? "Sent" : "Not sent") : (delivered ? "Shown" : "Pending");
   const title = delivered
-    ? `${telegram ? "Sent" : "Shown"} at ${clockTime(n.delivered_at)}`
+    ? `${telegram ? "Sent to Telegram" : "Shown"} at ${clockTime(n.delivered_at)}`
     : telegram
-      ? "Telegram delivery failed or is not configured; the next scan retries. Check the scan logs."
+      ? "Telegram delivery failed or isn't set up; the next scan retries. Check the scan logs."
       : "Not shown yet: open the dashboard with notifications allowed";
   return <span className={`pill ${n.status}`} title={title}>{label}</span>;
 }
@@ -37,27 +37,40 @@ export default function NotificationsPage({ refreshKey }) {
 
   return (
     <section>
-      <h2 className="page-title">Notification history</h2>
+      <div className="page-head">
+        <div>
+          <h1 className="large-title">History</h1>
+          <p className="page-sub">{items ? `${items.length.toLocaleString()} alerts` : "Every alert Job Radar has sent"}</p>
+        </div>
+      </div>
+
       <ErrorBox error={error} onRetry={load} />
       {!items && !error && <Loading />}
-      {items?.length === 0 && <Empty>No notifications yet. They appear here when a scan finds a new matching job.</Empty>}
-      {items && groupByDay(items).map((group) => (
-        <div key={group.label} className="day-group">
-          <h3 className="day-label">{group.label}</h3>
-          {group.items.map((n) => {
-            const [title, company] = n.body.split("\n");
-            const url = safeUrl(n.url);
-            return (
-              <div key={n.id} className="history-row">
-                <time className="history-time">{clockTime(n.created_at)}</time>
-                <span className="history-text">
-                  {url ? <a href={url} target="_blank" rel="noopener noreferrer">{title}</a> : title}
-                  <span className="muted"> — {company}</span>
-                </span>
-                <StatusPill notification={n} />
-              </div>
-            );
-          })}
+      {items?.length === 0 && (
+        <div className="group"><Empty title="No alerts yet">They appear here when a scan finds a new job that matches your filters.</Empty></div>
+      )}
+
+      {items && groupByDay(items).map((group, index) => (
+        <div key={group.label}>
+          <h2 className="section-label" style={index === 0 ? { marginTop: 0 } : undefined}>{group.label}</h2>
+          <div className="group">
+            {group.items.map((n) => {
+              const [title, company] = n.body.split("\n");
+              const url = safeUrl(n.url);
+              return (
+                <div key={n.id} className="row plain">
+                  <time className="time">{clockTime(n.created_at)}</time>
+                  <div className="job-text">
+                    {url
+                      ? <a className="job-company" style={{ fontWeight: 600 }} href={url} target="_blank" rel="noopener noreferrer">{title}</a>
+                      : <span className="job-company" style={{ fontWeight: 600 }}>{title}</span>}
+                    <span className="job-meta">{company}</span>
+                  </div>
+                  <StatusPill notification={n} />
+                </div>
+              );
+            })}
+          </div>
         </div>
       ))}
     </section>

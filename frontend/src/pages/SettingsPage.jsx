@@ -2,20 +2,33 @@ import { useEffect, useState } from "react";
 import { ErrorBox, Loading } from "../components/Status";
 import { api, HOSTED } from "../services/api";
 
-function CheckboxGroup({ legend, options, selected, onChange }) {
-  const toggle = (option) =>
-    onChange(selected.includes(option) ? selected.filter((o) => o !== option) : [...selected, option]);
+function Switch({ id, checked, onChange }) {
   return (
-    <fieldset>
-      <legend>{legend}</legend>
-      {options.map((option) => (
-        <label key={option} className="check">
-          <input type="checkbox" checked={selected.includes(option)} onChange={() => toggle(option)} />
-          {option}
-        </label>
-      ))}
-      {selected.length === 0 && <p className="hint">None selected: this filter is off (anything passes).</p>}
-    </fieldset>
+    <span className="switch">
+      <input id={id} type="checkbox" role="switch" checked={checked} onChange={(e) => onChange(e.target.checked)} />
+      <span className="switch-track" aria-hidden="true" />
+    </span>
+  );
+}
+
+function OptionGroup({ name, label, options, selected, onChange }) {
+  const toggle = (option, on) => onChange(on ? [...selected, option] : selected.filter((o) => o !== option));
+  return (
+    <>
+      <h2 className="section-label">{label}</h2>
+      <div className="group">
+        {options.map((option) => {
+          const id = `${name}-${option.replace(/\W+/g, "-").toLowerCase()}`;
+          return (
+            <label key={option} className="row plain setting" htmlFor={id}>
+              <span>{option}</span>
+              <Switch id={id} checked={selected.includes(option)} onChange={(on) => toggle(option, on)} />
+            </label>
+          );
+        })}
+      </div>
+      {selected.length === 0 && <p className="footnote">None selected, so this filter is off and everything passes.</p>}
+    </>
   );
 }
 
@@ -55,77 +68,81 @@ export default function SettingsPage({ notifier }) {
     }
   }
 
+  const head = (
+    <div className="page-head">
+      <div>
+        <h1 className="large-title">Settings</h1>
+        <p className="page-sub">Choose which newly found jobs alert you</p>
+      </div>
+    </div>
+  );
+
   if (!form || !options) {
-    return <section><h2 className="page-title">Settings</h2><ErrorBox error={status.error} />{!status.error && <Loading />}</section>;
+    return <section>{head}<ErrorBox error={status.error} />{!status.error && <Loading />}</section>;
   }
 
   const { permission, requestPermission, sendTest } = notifier;
 
   return (
     <section>
-      <h2 className="page-title">Settings</h2>
-      <form className="settings" onSubmit={save}>
-        <CheckboxGroup legend="Locations" options={options.locations} selected={form.locations}
-                       onChange={update("locations")} />
-        <CheckboxGroup legend="Job types" options={options.job_types} selected={form.job_types}
-                       onChange={update("job_types")} />
-        <CheckboxGroup legend="Categories" options={options.categories} selected={form.categories}
-                       onChange={update("categories")} />
+      {head}
+      <form onSubmit={save}>
+        <OptionGroup name="location" label="Locations" options={options.locations} selected={form.locations} onChange={update("locations")} />
+        <OptionGroup name="type" label="Job types" options={options.job_types} selected={form.job_types} onChange={update("job_types")} />
+        <OptionGroup name="category" label="Categories" options={options.categories} selected={form.categories} onChange={update("categories")} />
 
-        <fieldset>
-          <legend>Keywords</legend>
-          <input type="text" value={keywordText} placeholder="python, backend, machine learning"
-                 onChange={(e) => { setKeywordText(e.target.value); setStatus((s) => ({ ...s, saved: false })); }} />
-          <p className="hint">Comma-separated. A job matches if it contains <b>any</b> keyword. Empty = no keyword filter.</p>
-        </fieldset>
-
-        <fieldset>
-          <legend>Freshness</legend>
-          <label className="inline">
-            Only jobs posted in the last
-            <input type="number" min="1" max="365" value={form.max_age_days ?? ""}
-                   onChange={(e) => update("max_age_days")(e.target.value === "" ? null : Number(e.target.value))} />
-            days
-          </label>
-          <p className="hint">Leave empty for no limit. Jobs with no posting date always pass.</p>
-        </fieldset>
-
-        <fieldset>
-          <legend>Notifications</legend>
-          <label className="check">
-            <input type="checkbox" checked={form.browser_notifications}
-                   onChange={(e) => update("browser_notifications")(e.target.checked)} />
-            {HOSTED ? "Browser popups while the dashboard is open" : "Browser notifications"}
-          </label>
-          <div className="permission">
-            {permission === "granted" && <>
-              <span className="status ok">● Allowed in this browser</span>
-              <button type="button" className="button small" onClick={sendTest}>Send test</button>
-            </>}
-            {permission === "default" && (
-              <button type="button" className="button small" onClick={requestPermission}>Allow notifications</button>
-            )}
-            {permission === "denied" && (
-              <span className="status error">Blocked by the browser. Allow notifications for this site in the address bar.</span>
-            )}
-            {permission === "unsupported" && <span className="status error">This browser does not support notifications.</span>}
-          </div>
-          <p className="hint">
-            {HOSTED
-              ? "Telegram alerts are sent by the hourly GitHub scan, whether or not this page is open. Browser popups are an extra while the dashboard is open."
-              : "Alerts are shown while a Job Radar tab is open. Missed ones are shown when you return."}
-          </p>
-        </fieldset>
-
-        <ErrorBox error={status.error} />
-        <div className="form-actions">
-          <button className="button primary" type="submit" disabled={status.saving}>
-            {status.saving ? "Saving…" : "Save settings"}
-          </button>
-          {status.saved && <span className="status ok">{status.saved}</span>}
+        <h2 className="section-label">Keywords</h2>
+        <div className="group">
+          <input id="keywords" className="field wide-field" type="text" value={keywordText} placeholder="python, backend, machine learning"
+                 aria-label="Keywords" onChange={(e) => { setKeywordText(e.target.value); setStatus((s) => ({ ...s, saved: false })); }} />
         </div>
-        {HOSTED && <p className="hint">Saving asks for the admin password once per browser tab.</p>}
-        <p className="hint">Filters decide which <b>newly discovered</b> jobs notify you. Jobs already seen are never announced again.</p>
+        <p className="footnote">Separate with commas. A job matches if it contains any of them. Leave empty to skip this filter.</p>
+
+        <h2 className="section-label">Freshness</h2>
+        <div className="group">
+          <label className="row plain setting" htmlFor="max-age">
+            <span>Posted within (days)</span>
+            <input id="max-age" className="field inline-field" type="number" min="1" max="365" placeholder="Any"
+                   value={form.max_age_days ?? ""}
+                   onChange={(e) => update("max_age_days")(e.target.value === "" ? null : Number(e.target.value))} />
+          </label>
+        </div>
+        <p className="footnote">Leave empty for no limit. Jobs without a posting date are always shown.</p>
+
+        <h2 className="section-label">Notifications</h2>
+        <div className="group">
+          <label className="row plain setting" htmlFor="browser-popups">
+            <span>{HOSTED ? "Browser alerts while this page is open" : "Browser notifications"}</span>
+            <Switch id="browser-popups" checked={form.browser_notifications} onChange={update("browser_notifications")} />
+          </label>
+          <div className="row plain setting" style={{ cursor: "default" }}>
+            <span className="muted">
+              {permission === "granted" && "Allowed in this browser"}
+              {permission === "default" && "Not allowed yet"}
+              {permission === "denied" && "Blocked. Allow notifications for this site from the address bar."}
+              {permission === "unsupported" && "This browser doesn't support notifications"}
+            </span>
+            {permission === "granted" && <button type="button" className="btn btn-sm" onClick={sendTest}>Send test</button>}
+            {permission === "default" && <button type="button" className="btn btn-tinted btn-sm" onClick={requestPermission}>Allow</button>}
+          </div>
+        </div>
+        <p className="footnote">
+          {HOSTED
+            ? "Telegram alerts come from the hourly scan, whether or not this page is open."
+            : "Alerts show while a Job Radar tab is open. Missed ones appear when you come back."}
+        </p>
+
+        <div style={{ marginTop: 24 }}><ErrorBox error={status.error} /></div>
+        <div className="save-bar">
+          <button className="btn btn-primary btn-lg" type="submit" disabled={status.saving}>
+            {status.saving ? "Saving…" : "Save"}
+          </button>
+          {status.saved && <span className="saved">{status.saved}</span>}
+        </div>
+        <p className="footnote" style={{ paddingInline: 0, marginTop: 14 }}>
+          Filters only decide which newly found jobs alert you; a job is never announced twice.
+          {HOSTED && " Saving asks for your admin password once per tab."}
+        </p>
       </form>
     </section>
   );

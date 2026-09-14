@@ -31,6 +31,7 @@ class Job(Base):
     job_type: Mapped[str] = mapped_column(String(30))
     category: Mapped[str] = mapped_column(String(50))
     compensation: Mapped[str | None] = mapped_column(String(200))
+    logo_url: Mapped[str | None] = mapped_column(String(500))
     # Identity of this exact posting (source + id / canonical URL).
     fingerprint: Mapped[str] = mapped_column(String(64), unique=True)
     # Identity of the opening regardless of URL/source (company + title + location).

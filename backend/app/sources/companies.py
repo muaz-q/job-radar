@@ -11,6 +11,7 @@ company per scan; one failing company is a warning, not a failed source.
 import logging
 import time
 from concurrent.futures import ThreadPoolExecutor
+from dataclasses import replace
 from datetime import datetime, timezone
 
 import httpx
@@ -215,7 +216,8 @@ class CompaniesSource(JobSource):
             log.exception("companies board=%s/%s crashed", board.ats, board.slug)
             return f"{board.ats}/{board.slug}: unexpected {type(exc).__name__}"
         log.info("companies board=%s/%s jobs=%d skipped=%d", board.ats, board.slug, len(jobs), skipped)
-        return jobs, skipped
+        logo = company_logo_url(board)
+        return ([replace(job, logo_url=logo) for job in jobs] if logo else jobs), skipped
 
     def fetch_jobs(self) -> FetchResult:
         """Companies on different websites are fetched in parallel; companies sharing a website
@@ -254,6 +256,11 @@ class CompaniesSource(JobSource):
 
 
 MAX_PARALLEL_WEBSITES = 8
+
+
+def company_logo_url(board: Board) -> str | None:
+    """Hiring-system APIs carry no logos, so the company's site icon is used (domain from config)."""
+    return f"https://www.google.com/s2/favicons?domain={board.domain}&sz=128" if board.domain else None
 
 
 def website(board: Board) -> str:

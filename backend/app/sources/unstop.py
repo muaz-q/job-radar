@@ -92,6 +92,9 @@ def parse_opportunity(raw: object) -> NormalizedJob | None:
         job_type="Internship",
         category=classify_category(title, *filter(None, work_functions)),
         compensation=_compensation(detail),
+        # organisation.logoUrl is the company logo. The listing's own image (logoUrl2) is sometimes
+        # a recruiter's personal photo, so it is deliberately not used.
+        logo_url=organisation.get("logoUrl") if str(organisation.get("logoUrl", "")).startswith("https://") else None,
     )
 
 

@@ -23,6 +23,7 @@ class NormalizedJob:
     job_type: str = "Full-time"
     category: str = "Other"
     compensation: str | None = None
+    logo_url: str | None = None  # https only; the dashboard falls back to an initial if it fails to load
 
 
 @dataclass

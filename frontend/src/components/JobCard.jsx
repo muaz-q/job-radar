@@ -1,42 +1,39 @@
+import CompanyLogo from "./CompanyLogo";
 import { isFresh, safeUrl, timeAgo } from "../services/format";
 
-export function PostedLine({ job }) {
-  return job.posted_at
-    ? <>Posted {timeAgo(job.posted_at)}</>
-    : <>Found {timeAgo(job.first_seen_at)}</>;
+export function postedText(job) {
+  return job.posted_at ? `Posted ${timeAgo(job.posted_at)}` : `Found ${timeAgo(job.first_seen_at)}`;
 }
 
-export function ViewJobButton({ url, className = "" }) {
+const SOURCE_LABELS = { companies: "Careers site", unstop: "Unstop", wellfound: "Wellfound", mock: "Mock" };
+export const sourceLabel = (source) => SOURCE_LABELS[source] ?? source;
+
+export function ViewJobButton({ url, size = "sm", label = "View" }) {
   const href = safeUrl(url);
-  if (!href) return <span className="muted">No valid link</span>;
+  if (!href) return null;
+  const cls = size === "lg" ? "btn btn-primary btn-lg" : "btn btn-tinted btn-sm";
   return (
-    <a className={`button primary ${className}`} href={href} target="_blank" rel="noopener noreferrer">
-      View Job →
+    <a className={cls} href={href} target="_blank" rel="noopener noreferrer">
+      {label}
     </a>
   );
 }
 
-export default function JobCard({ job }) {
+export default function JobRow({ job }) {
   return (
-    <article className="job-card">
-      <div className="job-main">
-        <h3 className="job-title">
-          <a href={`#/jobs/${job.id}`}>{job.title}</a>
-          {isFresh(job.first_seen_at) && <span className="badge new">New</span>}
-        </h3>
+    <div className="row link">
+      <CompanyLogo company={job.company} url={job.logo_url} />
+      <div className="job-text">
+        <a className="job-title" href={`#/jobs/${job.id}`}>
+          {isFresh(job.first_seen_at) && <i className="new-dot" title="Found in the last 24 hours" />}
+          <span>{job.title}</span>
+        </a>
         <div className="job-company">{job.company}</div>
         <div className="job-meta">
-          <span>{job.location ?? "Location not listed"}</span>
-          <span className="dot">·</span>
-          <span><PostedLine job={job} /></span>
-        </div>
-        <div className="job-tags">
-          <span className="tag">{job.job_type}</span>
-          <span className="tag">{job.category}</span>
-          <span className="tag subtle">{job.source}</span>
+          {[job.location ?? "Location not listed", postedText(job), job.job_type, sourceLabel(job.source)].join("  ·  ")}
         </div>
       </div>
       <ViewJobButton url={job.url} />
-    </article>
+    </div>
   );
 }

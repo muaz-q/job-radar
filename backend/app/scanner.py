@@ -14,7 +14,9 @@ from urllib.parse import urlsplit
 from sqlalchemy.orm import Session
 
 from app.database import Database, utcnow
-from app.dedup import find_new_jobs
+from sqlalchemy import bindparam, update
+
+from app.dedup import find_new_jobs, fingerprint
 from app.filters import FilterSettings, matches_filters
 from app.models import Job, SourceState
 from app.notifications import NotificationService
@@ -43,14 +45,31 @@ def _is_web_url(url: str | None) -> bool:
     return parts.scheme in ("http", "https") and bool(parts.netloc)
 
 
+def _https(url: str | None) -> str | None:
+    parts = urlsplit(url or "")
+    return url if parts.scheme == "https" and parts.netloc and len(url) <= 500 else None
+
+
 def _to_model(job: NormalizedJob, fingerprint: str, content_key: str, matched: bool, now: datetime) -> Job:
     return Job(
         source=job.source, external_id=job.external_id, company=job.company, title=job.title,
         location=job.location, is_remote=job.is_remote, url=job.url, posted_at=job.posted_at,
         first_seen_at=now, description=job.description, job_type=job.job_type, category=job.category,
         compensation=job.compensation, fingerprint=fingerprint, content_key=content_key,
-        matched_on_discovery=matched,
+        matched_on_discovery=matched, logo_url=_https(job.logo_url),
     )
+
+
+def _backfill_logos(session: Session, jobs: list[NormalizedJob]) -> None:
+    """Jobs stored before logos existed get one the next time their source lists them."""
+    rows = [{"b_fp": fingerprint(job), "b_logo": logo} for job in jobs if (logo := _https(job.logo_url))]
+    if rows:
+        table = Job.__table__
+        session.connection().execute(
+            update(table).where(table.c.fingerprint == bindparam("b_fp"), table.c.logo_url.is_(None))
+            .values(logo_url=bindparam("b_logo")),
+            rows,
+        )
 
 
 class Scanner:
@@ -131,6 +150,7 @@ class Scanner:
             settings = get_settings(session)
             filters = FilterSettings.from_model(settings)
             dedup = find_new_jobs(session, usable)
+            _backfill_logos(session, usable)
 
             new_models, matching = [], []
             for job, fp, ck in dedup.new_jobs:

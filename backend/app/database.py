@@ -3,7 +3,7 @@
 from collections.abc import Iterator
 from datetime import datetime, timezone
 
-from sqlalchemy import DateTime, create_engine
+from sqlalchemy import DateTime, create_engine, inspect, text
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 from sqlalchemy.types import TypeDecorator
@@ -54,6 +54,20 @@ class Database:
         from app import models  # noqa: F401  (registers tables)
 
         Base.metadata.create_all(self.engine)
+        self._add_missing_columns()
+
+    # Columns added after the first release. create_all() never alters existing tables, and the
+    # hosted scanner's database on the data branch predates these, so they are added in place.
+    _ADDED_COLUMNS = {"jobs": {"logo_url": "VARCHAR(500)"}}
+
+    def _add_missing_columns(self) -> None:
+        inspector = inspect(self.engine)
+        with self.engine.begin() as connection:
+            for table, columns in self._ADDED_COLUMNS.items():
+                existing = {column["name"] for column in inspector.get_columns(table)}
+                for name, ddl in columns.items():
+                    if name not in existing:
+                        connection.execute(text(f"ALTER TABLE {table} ADD COLUMN {name} {ddl}"))
 
     def session(self) -> Session:
         return self.session_factory()

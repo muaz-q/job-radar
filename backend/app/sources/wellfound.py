@@ -66,7 +66,7 @@ def _location(raw: dict) -> tuple[str | None, bool]:
     return (" · ".join(parts) or None), is_remote
 
 
-def parse_listing(raw: object, company: str | None) -> NormalizedJob | None:
+def parse_listing(raw: object, company: str | None, logo_url: str | None = None) -> NormalizedJob | None:
     """Turn one JobListingSearchResult into a NormalizedJob, or None if it is unusable."""
     if not isinstance(raw, dict):
         return None
@@ -93,6 +93,7 @@ def parse_listing(raw: object, company: str | None) -> NormalizedJob | None:
         job_type=normalize_job_type(raw.get("jobType"), title),
         category=classify_category(title, role_title),
         compensation=clean_text(raw.get("compensation"), 200),
+        logo_url=logo_url if isinstance(logo_url, str) and logo_url.startswith("https://") else None,
     )
 
 
@@ -114,17 +115,19 @@ def parse_search_page(html: str) -> tuple[list[NormalizedJob], int]:
 
     # Listings reference their company only indirectly: StartupResult.highlightedJobListings -> listing keys.
     company_by_listing: dict[str, str] = {}
+    logo_by_listing: dict[str, str] = {}
     for key, value in apollo.items():
         if key.startswith("StartupResult:") and isinstance(value, dict):
             for ref in value.get("highlightedJobListings") or []:
                 if isinstance(ref, dict) and isinstance(ref.get("__ref"), str):
                     company_by_listing[ref["__ref"]] = value.get("name")
+                    logo_by_listing[ref["__ref"]] = value.get("logoUrl")
 
     jobs, skipped = [], 0
     for key, value in apollo.items():
         if not key.startswith("JobListingSearchResult:"):
             continue
-        job = parse_listing(value, company_by_listing.get(key))
+        job = parse_listing(value, company_by_listing.get(key), logo_by_listing.get(key))
         if job is None:
             skipped += 1
         else:

@@ -35,6 +35,8 @@ class Board(_Strict):
     ats: Literal["greenhouse", "lever", "ashby", "workday", "amazon", "microsoft"]
     slug: str = Field(pattern=r"^[A-Za-z0-9_-]{1,100}$")
     name: str | None = Field(default=None, max_length=100)
+    # The company's website, used only to show its icon on the dashboard (e.g. "salesforce.com").
+    domain: str | None = Field(default=None, pattern=r"^[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$", max_length=100)
     host: str | None = Field(default=None, pattern=r"^[a-z0-9-]{1,60}\.wd\d{1,3}$")
     site: str | None = Field(default=None, pattern=r"^[A-Za-z0-9_-]{1,100}$")
     # amazon: pages of 100 newest jobs to read per scan

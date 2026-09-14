@@ -82,6 +82,7 @@ class JobSummary(BaseModel):
     job_type: str
     category: str
     compensation: str | None
+    logo_url: str | None = None
     matches_filters: bool = False
 
 

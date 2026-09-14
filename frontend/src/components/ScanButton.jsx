@@ -1,37 +1,42 @@
 import { useState } from "react";
 import { api } from "../services/api";
 
-// Triggers POST /scan and reports what came back in one short line.
+// Starts a scan and reports the outcome in one short line next to the button.
 export default function ScanButton({ onScanned }) {
-  const [state, setState] = useState({ busy: false, message: null, error: false });
+  const [state, setState] = useState({ busy: false, message: null, error: false, detail: "" });
 
   async function scan() {
-    setState({ busy: true, message: "Scanning…", error: false });
+    setState({ busy: true, message: null, error: false, detail: "" });
     try {
       const summary = await api.scan();
       if (summary.queued) { // hosted: the scan runs on GitHub, results arrive later
-        setState({ busy: false, message: summary.detail, error: false });
+        setState({ busy: false, message: "Started · results in ~5 min", error: false, detail: summary.detail });
         return;
       }
-      const parts = summary.sources.map((s) =>
-        s.status === "error"
-          ? `${s.source}: failed`
-          : `${s.source}: ${s.new} new, ${s.matching} matching`,
-      );
-      const failed = summary.sources.some((s) => s.status === "error");
-      setState({ busy: false, message: parts.join(" · "), error: failed });
+      const newCount = summary.sources.reduce((n, s) => n + s.new, 0);
+      const matching = summary.sources.reduce((n, s) => n + s.matching, 0);
+      const failed = summary.sources.filter((s) => s.status === "error").map((s) => s.source);
+      const detail = summary.sources.map((s) => `${s.source}: ${s.status === "error" ? "failed" : `${s.new} new, ${s.matching} matching`}`).join(" · ");
+      setState({
+        busy: false,
+        message: failed.length ? `${failed.join(", ")} failed` : `${newCount} new · ${matching} matching`,
+        error: failed.length > 0,
+        detail,
+      });
       onScanned?.(summary);
     } catch (error) {
-      setState({ busy: false, message: error.message, error: true });
+      setState({ busy: false, message: error.message, error: true, detail: error.message });
     }
   }
 
   return (
-    <div className="scan">
-      {state.message && <span className={state.error ? "scan-msg error" : "scan-msg"}>{state.message}</span>}
-      <button className="button" onClick={scan} disabled={state.busy}>
+    <>
+      {state.message && (
+        <span className={state.error ? "scan-msg error" : "scan-msg"} title={state.detail} role="status">{state.message}</span>
+      )}
+      <button className="btn btn-primary" onClick={scan} disabled={state.busy}>
         {state.busy ? "Scanning…" : "Scan now"}
       </button>
-    </div>
+    </>
   );
 }

@@ -21,12 +21,14 @@
         "ats": "amazon",
         "slug": "amazon",
         "name": "Amazon",
+        "domain": "amazon.com",
         "max_pages": 2
       },
       {
         "ats": "microsoft",
         "slug": "microsoft",
         "name": "Microsoft",
+        "domain": "microsoft.com",
         "queries": [
           "intern",
           "software engineer"
@@ -36,6 +38,7 @@
         "ats": "workday",
         "slug": "salesforce",
         "name": "Salesforce",
+        "domain": "salesforce.com",
         "host": "salesforce.wd12",
         "site": "External_Career_Site"
       },
@@ -43,6 +46,7 @@
         "ats": "workday",
         "slug": "salesforce",
         "name": "Salesforce",
+        "domain": "salesforce.com",
         "host": "salesforce.wd12",
         "site": "Futureforce_Internships"
       },
@@ -50,6 +54,7 @@
         "ats": "workday",
         "slug": "nvidia",
         "name": "NVIDIA",
+        "domain": "nvidia.com",
         "host": "nvidia.wd5",
         "site": "NVIDIAExternalCareerSite"
       },
@@ -57,6 +62,7 @@
         "ats": "workday",
         "slug": "adobe",
         "name": "Adobe",
+        "domain": "adobe.com",
         "host": "adobe.wd5",
         "site": "external_experienced"
       },
@@ -64,6 +70,7 @@
         "ats": "workday",
         "slug": "autodesk",
         "name": "Autodesk",
+        "domain": "autodesk.com",
         "host": "autodesk.wd1",
         "site": "Ext"
       },
@@ -71,6 +78,7 @@
         "ats": "workday",
         "slug": "target",
         "name": "Target",
+        "domain": "target.com",
         "host": "target.wd5",
         "site": "targetcareers"
       },
@@ -78,108 +86,129 @@
         "ats": "workday",
         "slug": "workday",
         "name": "Workday",
+        "domain": "workday.com",
         "host": "workday.wd5",
         "site": "Workday"
       },
       {
         "ats": "greenhouse",
         "slug": "groww",
-        "name": "Groww"
+        "name": "Groww",
+        "domain": "groww.in"
       },
       {
         "ats": "greenhouse",
         "slug": "razorpaysoftwareprivatelimited",
-        "name": "Razorpay"
+        "name": "Razorpay",
+        "domain": "razorpay.com"
       },
       {
         "ats": "greenhouse",
         "slug": "postman",
-        "name": "Postman"
+        "name": "Postman",
+        "domain": "postman.com"
       },
       {
         "ats": "greenhouse",
         "slug": "rubrik",
-        "name": "Rubrik"
+        "name": "Rubrik",
+        "domain": "rubrik.com"
       },
       {
         "ats": "greenhouse",
         "slug": "druva",
-        "name": "Druva"
+        "name": "Druva",
+        "domain": "druva.com"
       },
       {
         "ats": "greenhouse",
         "slug": "hackerrank",
-        "name": "HackerRank"
+        "name": "HackerRank",
+        "domain": "hackerrank.com"
       },
       {
         "ats": "greenhouse",
         "slug": "inmobi",
-        "name": "InMobi"
+        "name": "InMobi",
+        "domain": "inmobi.com"
       },
       {
         "ats": "greenhouse",
         "slug": "stripe",
-        "name": "Stripe"
+        "name": "Stripe",
+        "domain": "stripe.com"
       },
       {
         "ats": "greenhouse",
         "slug": "coinbase",
-        "name": "Coinbase"
+        "name": "Coinbase",
+        "domain": "coinbase.com"
       },
       {
         "ats": "lever",
         "slug": "cred",
-        "name": "CRED"
+        "name": "CRED",
+        "domain": "cred.club"
       },
       {
         "ats": "lever",
         "slug": "meesho",
-        "name": "Meesho"
+        "name": "Meesho",
+        "domain": "meesho.com"
       },
       {
         "ats": "lever",
         "slug": "zeta",
-        "name": "Zeta"
+        "name": "Zeta",
+        "domain": "zeta.tech"
       },
       {
         "ats": "lever",
         "slug": "paytm",
-        "name": "Paytm"
+        "name": "Paytm",
+        "domain": "paytm.com"
       },
       {
         "ats": "lever",
         "slug": "hevodata",
-        "name": "Hevo Data"
+        "name": "Hevo Data",
+        "domain": "hevodata.com"
       },
       {
         "ats": "lever",
         "slug": "fampay",
-        "name": "FamPay"
+        "name": "FamPay",
+        "domain": "famapp.in"
       },
       {
         "ats": "ashby",
         "slug": "sarvam",
-        "name": "Sarvam AI"
+        "name": "Sarvam AI",
+        "domain": "sarvam.ai"
       },
       {
         "ats": "ashby",
         "slug": "atlan",
-        "name": "Atlan"
+        "name": "Atlan",
+        "domain": "atlan.com"
       },
       {
         "ats": "ashby",
         "slug": "plane",
-        "name": "Plane"
+        "name": "Plane",
+        "domain": "plane.so"
       },
       {
         "ats": "ashby",
         "slug": "composio",
-        "name": "Composio"
+        "name": "Composio",
+        "domain": "composio.dev"
       },
       {
         "ats": "ashby",
         "slug": "smallest",
-        "name": "Smallest AI"
+        "name": "Smallest AI",
+        "domain": "smallest.ai"
       }
     ]
   },
