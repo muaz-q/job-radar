@@ -18,6 +18,7 @@ from app.normalize import (
     classify_category, clean_description, clean_text, join_locations, mentions_india, normalize_job_type, strip_html,
 )
 from app.sources.base import FetchResult, JobSource, NormalizedJob, SourceError
+from app.sources.careers_sites import FETCHERS
 from app.sources.settings_file import Board
 
 log = logging.getLogger(__name__)
@@ -176,6 +177,8 @@ class CompaniesSource(JobSource):
         self._sleep = sleep
 
     def _fetch_board(self, client: httpx.Client, board: Board) -> tuple[list[NormalizedJob], int]:
+        if board.ats in FETCHERS:  # multi-request careers sites (Workday, Amazon, Microsoft)
+            return FETCHERS[board.ats](client, board, self.india_only, self._sleep, self.request_delay_seconds)
         label = f"{board.ats}/{board.slug}"
         try:
             response = client.get(ENDPOINTS[board.ats].format(slug=board.slug))
@@ -212,6 +215,10 @@ class CompaniesSource(JobSource):
                     jobs, skipped = self._fetch_board(client, board)
                 except SourceError as exc:
                     result.errors.append(str(exc))
+                    continue
+                except Exception as exc:  # a bug in one site's parser must not lose every other company
+                    log.exception("companies board=%s/%s crashed", board.ats, board.slug)
+                    result.errors.append(f"{board.ats}/{board.slug}: unexpected {type(exc).__name__}")
                     continue
                 log.info("companies board=%s/%s jobs=%d skipped=%d", board.ats, board.slug, len(jobs), skipped)
                 result.jobs.extend(jobs)

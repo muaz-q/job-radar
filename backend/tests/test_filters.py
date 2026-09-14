@@ -25,6 +25,9 @@ TARGET = FilterSettings(
     ("India", False, "Remote India", False),  # onsite somewhere in India is not remote
     ("Remote", True, "Remote (Anywhere)", True),
     (None, False, "Bengaluru", False),
+    ("India · Multiple locations", False, "Bengaluru", True),   # Microsoft: cities not named
+    ("India · 3 locations", False, "Bengaluru", False),         # Workday: known not to include Bengaluru
+    ("USA · Multiple locations", False, "Bengaluru", False),
     (None, True, "Remote (Anywhere)", True),
 ])
 def test_location_matching(location, remote, option, expected):

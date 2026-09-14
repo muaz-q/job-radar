@@ -17,26 +17,170 @@
     "india_only": true,
     "request_delay_seconds": 1,
     "boards": [
-      { "ats": "greenhouse", "slug": "groww", "name": "Groww" },
-      { "ats": "greenhouse", "slug": "razorpaysoftwareprivatelimited", "name": "Razorpay" },
-      { "ats": "greenhouse", "slug": "postman", "name": "Postman" },
-      { "ats": "greenhouse", "slug": "rubrik", "name": "Rubrik" },
-      { "ats": "greenhouse", "slug": "druva", "name": "Druva" },
-      { "ats": "greenhouse", "slug": "hackerrank", "name": "HackerRank" },
-      { "ats": "greenhouse", "slug": "inmobi", "name": "InMobi" },
-      { "ats": "greenhouse", "slug": "stripe", "name": "Stripe" },
-      { "ats": "greenhouse", "slug": "coinbase", "name": "Coinbase" },
-      { "ats": "lever", "slug": "cred", "name": "CRED" },
-      { "ats": "lever", "slug": "meesho", "name": "Meesho" },
-      { "ats": "lever", "slug": "zeta", "name": "Zeta" },
-      { "ats": "lever", "slug": "paytm", "name": "Paytm" },
-      { "ats": "lever", "slug": "hevodata", "name": "Hevo Data" },
-      { "ats": "lever", "slug": "fampay", "name": "FamPay" },
-      { "ats": "ashby", "slug": "sarvam", "name": "Sarvam AI" },
-      { "ats": "ashby", "slug": "atlan", "name": "Atlan" },
-      { "ats": "ashby", "slug": "plane", "name": "Plane" },
-      { "ats": "ashby", "slug": "composio", "name": "Composio" },
-      { "ats": "ashby", "slug": "smallest", "name": "Smallest AI" }
+      {
+        "ats": "amazon",
+        "slug": "amazon",
+        "name": "Amazon",
+        "max_pages": 2
+      },
+      {
+        "ats": "microsoft",
+        "slug": "microsoft",
+        "name": "Microsoft",
+        "queries": [
+          "intern",
+          "software engineer"
+        ]
+      },
+      {
+        "ats": "workday",
+        "slug": "salesforce",
+        "name": "Salesforce",
+        "host": "salesforce.wd12",
+        "site": "External_Career_Site"
+      },
+      {
+        "ats": "workday",
+        "slug": "salesforce",
+        "name": "Salesforce",
+        "host": "salesforce.wd12",
+        "site": "Futureforce_Internships"
+      },
+      {
+        "ats": "workday",
+        "slug": "nvidia",
+        "name": "NVIDIA",
+        "host": "nvidia.wd5",
+        "site": "NVIDIAExternalCareerSite"
+      },
+      {
+        "ats": "workday",
+        "slug": "adobe",
+        "name": "Adobe",
+        "host": "adobe.wd5",
+        "site": "external_experienced"
+      },
+      {
+        "ats": "workday",
+        "slug": "autodesk",
+        "name": "Autodesk",
+        "host": "autodesk.wd1",
+        "site": "Ext"
+      },
+      {
+        "ats": "workday",
+        "slug": "target",
+        "name": "Target",
+        "host": "target.wd5",
+        "site": "targetcareers"
+      },
+      {
+        "ats": "workday",
+        "slug": "workday",
+        "name": "Workday",
+        "host": "workday.wd5",
+        "site": "Workday"
+      },
+      {
+        "ats": "greenhouse",
+        "slug": "groww",
+        "name": "Groww"
+      },
+      {
+        "ats": "greenhouse",
+        "slug": "razorpaysoftwareprivatelimited",
+        "name": "Razorpay"
+      },
+      {
+        "ats": "greenhouse",
+        "slug": "postman",
+        "name": "Postman"
+      },
+      {
+        "ats": "greenhouse",
+        "slug": "rubrik",
+        "name": "Rubrik"
+      },
+      {
+        "ats": "greenhouse",
+        "slug": "druva",
+        "name": "Druva"
+      },
+      {
+        "ats": "greenhouse",
+        "slug": "hackerrank",
+        "name": "HackerRank"
+      },
+      {
+        "ats": "greenhouse",
+        "slug": "inmobi",
+        "name": "InMobi"
+      },
+      {
+        "ats": "greenhouse",
+        "slug": "stripe",
+        "name": "Stripe"
+      },
+      {
+        "ats": "greenhouse",
+        "slug": "coinbase",
+        "name": "Coinbase"
+      },
+      {
+        "ats": "lever",
+        "slug": "cred",
+        "name": "CRED"
+      },
+      {
+        "ats": "lever",
+        "slug": "meesho",
+        "name": "Meesho"
+      },
+      {
+        "ats": "lever",
+        "slug": "zeta",
+        "name": "Zeta"
+      },
+      {
+        "ats": "lever",
+        "slug": "paytm",
+        "name": "Paytm"
+      },
+      {
+        "ats": "lever",
+        "slug": "hevodata",
+        "name": "Hevo Data"
+      },
+      {
+        "ats": "lever",
+        "slug": "fampay",
+        "name": "FamPay"
+      },
+      {
+        "ats": "ashby",
+        "slug": "sarvam",
+        "name": "Sarvam AI"
+      },
+      {
+        "ats": "ashby",
+        "slug": "atlan",
+        "name": "Atlan"
+      },
+      {
+        "ats": "ashby",
+        "slug": "plane",
+        "name": "Plane"
+      },
+      {
+        "ats": "ashby",
+        "slug": "composio",
+        "name": "Composio"
+      },
+      {
+        "ats": "ashby",
+        "slug": "smallest",
+        "name": "Smallest AI"
+      }
     ]
   },
   "unstop": {

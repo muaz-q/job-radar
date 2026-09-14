@@ -1,0 +1,44 @@
+{
+ "jobPostingInfo": {
+  "id": "401b18035eef100150608f8546a10000",
+  "title": "Salesforce DevOps - Technical Architect",
+  "jobDescription": "<p style=\"text-align:left\"><i>To get the best candidate experience, please consider applying for a maximum of 3 roles within 12 months to ensure you are not duplicating efforts.</i></p><p style=\"text-align:inherit\"></p><p style=\"text-align:left\"><span class=\"emphasis-3\">Job Category</span></p>Customer Success<p style=\"text-align:inherit\"></p><p style=\"text-align:left\"><span class=\"emphasis-3\">Job Details</span></p><p style=\"text-align:inherit\"></p><p style=\"text-align:left\"><span class=\"emphasis",
+  "location": "India - Hyderabad",
+  "additionalLocations": [
+   "India - Bangalore",
+   "India - Pune",
+   "India - Mumbai",
+   "India - Gurgaon"
+  ],
+  "postedOn": "Posted 2 Days Ago",
+  "startDate": "2026-09-11",
+  "timeType": "Full time",
+  "jobReqId": "JR353962",
+  "jobPostingId": "Salesforce-DevOps---Technical-Architect_JR353962",
+  "jobPostingSiteId": "External_Career_Site",
+  "country": {
+   "descriptor": "India",
+   "id": "c4f78be1a8f14da0ab49ce1162348a5e"
+  },
+  "canApply": true,
+  "posted": true,
+  "includeResumeParsing": true,
+  "jobRequisitionLocation": {
+   "descriptor": "India - Hyderabad",
+   "country": {
+    "descriptor": "India",
+    "id": "c4f78be1a8f14da0ab49ce1162348a5e",
+    "alpha2Code": "IN"
+   }
+  },
+  "remoteType": "Office - Flexible",
+  "externalUrl": "https://salesforce.wd12.myworkdayjobs.com/External_Career_Site/job/India---Hyderabad/Salesforce-DevOps---Technical-Architect_JR353962",
+  "questionnaireId": "ef39582c47e61001a217bf87a7a20000"
+ },
+ "hiringOrganization": {
+  "name": "621 Salesforce.com India Private Limited Hyderabad Branch",
+  "url": ""
+ },
+ "similarJobs": [],
+ "userAuthenticated": false
+}

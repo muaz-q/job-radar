@@ -105,13 +105,14 @@ GitHub runs both on every push.
 |---|---|---|
 | Unstop | Public API; `robots.txt` explicitly allows `/api/public/*` | ~900 open internships, many non-tech (filters handle it). All ~30 pages are read because results aren't date-sorted. |
 | Company boards | Official public job-board APIs of Greenhouse, Lever, Ashby | Only India-based / India-remote roles kept (`india_only`). 20 companies preset. |
+| Big-company careers sites | Workday career sites (robots.txt explicitly allows them and publishes job sitemaps), amazon.jobs search (only `/internal` disallowed), Microsoft's `/api/pcsx` (explicitly allowed in robots.txt) | Salesforce, NVIDIA, Adobe, Autodesk, Target, Workday, Amazon, Microsoft. Workday is queried for Bengaluru first, because multi-city postings only say "3 Locations". Microsoft rate-limits, so it gets 2 requests per scan. |
 | Wellfound | Public role pages allowed by `robots.txt` | Very few internships on public pages. |
 
 Checked and **not** used, because their terms forbid automated collection: Internshala
 ("data mining or similar data gathering"), Cutshort ("systematic or automated data collection"; its API is
 recruiters-only), HireHire ("scrape, copy, or resell data"). startup.jobs only exposes jobs through its
-own site search and has no feed. Big-tech careers sites (Google, Microsoft, Amazon) have no public
-listings API. Many of their internships still reach you through Unstop.
+own site search and has no feed. Google careers is excluded because its robots.txt disallows the job
+search results; Intuit's job search is disallowed and its Workday site requires login.
 
 ## How it works
 

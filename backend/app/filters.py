@@ -46,12 +46,15 @@ class FilterSettings:
 
 _BENGALURU = re.compile(r"\b(bengaluru|bangalore|bangaluru)\b", re.I)
 _INDIA = re.compile(r"\bindia\b", re.I)
+# Some careers sites (Microsoft) list India roles as "India, Multiple Locations" without naming cities.
+# Those may well include Bengaluru, so they count as a match rather than being silently dropped.
+_INDIA_UNSPECIFIED_CITIES = re.compile(r"\bindia\b.*\bmultiple locations\b", re.I)
 
 
 def matches_location(job: JobLike, option: str) -> bool:
     location = job.location or ""
     if option == "Bengaluru":
-        return bool(_BENGALURU.search(location))
+        return bool(_BENGALURU.search(location) or _INDIA_UNSPECIFIED_CITIES.search(location))
     if option == "Remote India":
         return job.is_remote and bool(_INDIA.search(location))
     if option == "Remote (Anywhere)":
