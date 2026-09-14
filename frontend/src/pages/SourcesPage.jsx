@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import CompanyLogo from "../components/CompanyLogo";
 import { CountUp, RevealTitle } from "../components/Motion";
 import { Empty, ErrorBox, Loading } from "../components/Status";
 import { api, GITHUB_REPO, HOSTED } from "../services/api";
@@ -9,6 +10,8 @@ const STATUS_TEXT = { ok: "Working", running: "Scanning", warning: "Partly worki
 export default function SourcesPage({ refreshKey }) {
   const [sources, setSources] = useState(null);
   const [error, setError] = useState(null);
+  const [companies, setCompanies] = useState([]);
+  useEffect(() => { api.overview().then((o) => setCompanies(o.topCompanies)).catch(() => {}); }, [refreshKey]);
 
   const load = useCallback(() => {
     api.listSources().then((data) => { setSources(data); setError(null); }).catch(setError);
@@ -65,6 +68,21 @@ export default function SourcesPage({ refreshKey }) {
           );
         })}
       </div>
+
+      {companies.length > 0 && (
+        <>
+          <h2 className="section-label">Companies in your feed</h2>
+          <ul className="logo-wall">
+            {companies.map((c, index) => (
+              <li key={c.company} className="logo-cell enter" style={{ "--i": Math.min(index, 13) }} title={`${c.company}: ${c.count} open roles`}>
+                <CompanyLogo company={c.company} url={c.logo_url} size={40} />
+                <span className="logo-name">{c.company}</span>
+                <span className="logo-count">{c.count} roles</span>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
 
       {HOSTED && (
         <p className="footnote">

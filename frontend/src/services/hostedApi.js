@@ -3,6 +3,7 @@
 //   Writes: the password-protected Vercel functions in /api (save settings, start a scan).
 // Filter matching is precomputed by the Python scanner, so no filter rules are duplicated here.
 import { ApiError, describeDetail } from "./errors";
+import { buildOverview } from "./overview";
 
 export const REPO = import.meta.env.VITE_GITHUB_REPO;
 const DATA_BASE = (import.meta.env.VITE_DATA_BASE_URL || `https://raw.githubusercontent.com/${REPO}/data/public`)
@@ -99,6 +100,11 @@ export const hostedApi = {
   },
 
   listSources: () => loadJson("sources.json"),
+
+  async overview() {
+    const { jobs, generated_at: generatedAt } = await loadJson("jobs.json");
+    return buildOverview({ matches: jobs.filter((j) => j.matches_filters), all: jobs, generatedAt });
+  },
 
   async getSettingsOptions() {
     return (await loadJson("meta.json")).options;

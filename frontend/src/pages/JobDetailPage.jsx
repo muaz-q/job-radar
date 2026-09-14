@@ -27,7 +27,7 @@ export default function JobDetailPage({ id }) {
   }, [id]);
 
   return (
-    <section>
+    <section className="narrow">
       <a className="back" href="#/"><ChevronLeft />Jobs</a>
       <ErrorBox error={error} />
       {!job && !error && <Loading />}

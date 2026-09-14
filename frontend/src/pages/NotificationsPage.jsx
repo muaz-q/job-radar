@@ -27,7 +27,7 @@ export default function NotificationsPage({ refreshKey }) {
   const unsent = items?.filter((n) => n.status !== "delivered").length ?? 0;
 
   return (
-    <section>
+    <section className="narrow">
       <div className="page-head">
         <div>
           <RevealTitle>History</RevealTitle>

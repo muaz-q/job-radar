@@ -105,13 +105,13 @@ export default function SettingsPage({ notifier, theme }) {
   );
 
   if (!form || !options) {
-    return <section>{head}{appearance}<div style={{ marginTop: 32 }}><ErrorBox error={status.error} />{!status.error && <Loading />}</div></section>;
+    return <section className="narrow">{head}{appearance}<div style={{ marginTop: 32 }}><ErrorBox error={status.error} />{!status.error && <Loading />}</div></section>;
   }
 
   const { permission, requestPermission, sendTest } = notifier;
 
   return (
-    <section>
+    <section className="narrow">
       {head}
       {appearance}
 

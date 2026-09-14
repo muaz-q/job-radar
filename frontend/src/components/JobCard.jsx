@@ -1,3 +1,4 @@
+import { memo } from "react";
 import CompanyLogo from "./CompanyLogo";
 import { ArrowUpRight } from "./Icons";
 import { safeUrl, timeAgo } from "../services/format";
@@ -28,7 +29,7 @@ export function ViewJobButton({ url }) {
   );
 }
 
-export default function JobRow({ job, isNew, index }) {
+function JobRow({ job, isNew, index }) {
   const href = safeUrl(job.url);
   const when = job.posted_at || job.first_seen_at;
   return (
@@ -54,3 +55,5 @@ export default function JobRow({ job, isNew, index }) {
     </div>
   );
 }
+
+export default memo(JobRow);

@@ -19,15 +19,25 @@ const NAV = [
   { key: "settings", label: "Settings", Icon: TabSettings },
 ];
 
-function useScrollY() {
-  const [y, setY] = useState(0);
+// Only the two thresholds matter, so state changes (and re-renders) happen when a threshold is crossed,
+// not on every scrolled pixel.
+function useScrollFlags() {
+  const [flags, setFlags] = useState({ scrolled: false, pastTitle: false });
   useEffect(() => {
-    const onScroll = () => setY(window.scrollY);
-    onScroll();
+    let frame = 0;
+    const read = () => {
+      frame = 0;
+      const y = window.scrollY;
+      const scrolled = y > 4;
+      const pastTitle = y > 64;
+      setFlags((prev) => (prev.scrolled === scrolled && prev.pastTitle === pastTitle ? prev : { scrolled, pastTitle }));
+    };
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(read); };
+    read();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener("scroll", onScroll); };
   }, []);
-  return y;
+  return flags;
 }
 
 function useToast() {
@@ -48,7 +58,7 @@ export default function App() {
   const notifier = useNotificationPoller({ onNewAlerts: refresh });
   const theme = useTheme();
   const newSince = useNewSince();
-  const scrollY = useScrollY();
+  const scroll = useScrollFlags();
   const [toast, notify] = useToast();
   const [scanning, setScanning] = useState(false);
   const spotlightRef = useRef(null);
@@ -75,11 +85,11 @@ export default function App() {
   else if (page === "settings") content = <SettingsPage notifier={notifier} theme={theme} />;
   else content = <JobsPage refreshKey={refreshKey} newSince={newSince} />;
 
-  const barClass = ["topbar", scrollY > 4 && "scrolled", scrollY > 64 && "past-title"].filter(Boolean).join(" ");
+  const barClass = ["topbar", scroll.scrolled && "scrolled", scroll.pastTitle && "past-title"].filter(Boolean).join(" ");
 
   return (
     <div className="shell">
-      <div className="backdrop" aria-hidden="true"><div className="aurora" /></div>
+      <div className="backdrop" aria-hidden="true" />
       <div ref={spotlightRef} className="spotlight" aria-hidden="true" />
       <header className={barClass}>
         <a className={scanning ? "brand scanning" : "brand"} href="#/" aria-label="Job Radar home"><RadarMark /><span>Job Radar</span></a>

@@ -1,5 +1,6 @@
 // Local mode: the FastAPI backend on this machine, reached through the Vite proxy at /api.
 import { ApiError, describeDetail } from "./errors";
+import { buildOverview } from "./overview";
 
 const BASE = "/api";
 const UNREACHABLE = "Cannot reach the Job Radar backend. Is it running on port 8010?";
@@ -37,6 +38,10 @@ export const localApi = {
   listJobs: (params = {}) => request("/jobs" + query(params)),
   getJob: (id) => request(`/jobs/${encodeURIComponent(id)}`),
   listSources: () => request("/sources"),
+  async overview() {
+    const [matches, all] = await Promise.all([request("/jobs?matching=true&limit=200"), request("/jobs?limit=200")]);
+    return buildOverview({ matches: matches.items, all: all.items });
+  },
   scan: () => request("/scan", { method: "POST" }),
   getSettings: () => request("/settings"),
   getSettingsOptions: () => request("/settings/options"),
