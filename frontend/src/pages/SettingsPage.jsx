@@ -1,6 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { CheckIcon } from "../components/Icons";
 import { ErrorBox, Loading } from "../components/Status";
 import { api, HOSTED } from "../services/api";
+
+const APPEARANCE = [["system", "System"], ["light", "Light"], ["dark", "Dark"]];
 
 function Switch({ id, checked, onChange }) {
   return (
@@ -11,34 +14,44 @@ function Switch({ id, checked, onChange }) {
   );
 }
 
-function OptionGroup({ name, label, options, selected, onChange }) {
-  const toggle = (option, on) => onChange(on ? [...selected, option] : selected.filter((o) => o !== option));
+// Multi-select as chips: far more compact than a column of switches, and selection reads at a glance.
+function ChipGroup({ label, options, selected, onChange, hint }) {
+  const toggle = (option) => onChange(selected.includes(option) ? selected.filter((o) => o !== option) : [...selected, option]);
   return (
     <>
       <h2 className="section-label">{label}</h2>
-      <div className="group">
-        {options.map((option) => {
-          const id = `${name}-${option.replace(/\W+/g, "-").toLowerCase()}`;
-          return (
-            <label key={option} className="row plain setting" htmlFor={id}>
-              <span>{option}</span>
-              <Switch id={id} checked={selected.includes(option)} onChange={(on) => toggle(option, on)} />
-            </label>
-          );
-        })}
+      <div className="card">
+        <div className="chips" role="group" aria-label={label}>
+          {options.map((option) => {
+            const on = selected.includes(option);
+            return (
+              <button key={option} type="button" className="chip" aria-pressed={on} onClick={() => toggle(option)}>
+                {on && <CheckIcon />}{option}
+              </button>
+            );
+          })}
+        </div>
       </div>
-      {selected.length === 0 && <p className="footnote">None selected, so this filter is off and everything passes.</p>}
+      <p className="footnote">{selected.length === 0 ? "Nothing selected, so this filter is off." : hint}</p>
     </>
   );
 }
 
 const toKeywordList = (text) => text.split(",").map((k) => k.trim()).filter(Boolean);
+const normalized = (form, keywordText) => JSON.stringify({
+  ...form,
+  keywords: toKeywordList(keywordText),
+  locations: [...form.locations].sort(),
+  job_types: [...form.job_types].sort(),
+  categories: [...form.categories].sort(),
+});
 
-export default function SettingsPage({ notifier }) {
+export default function SettingsPage({ notifier, theme }) {
   const [options, setOptions] = useState(null);
   const [form, setForm] = useState(null);
+  const [saved, setSaved] = useState(null);
   const [keywordText, setKeywordText] = useState("");
-  const [status, setStatus] = useState({ saving: false, saved: false, error: null });
+  const [status, setStatus] = useState({ saving: false, message: null, error: null });
 
   useEffect(() => {
     Promise.all([api.getSettingsOptions(), api.getSettings()])
@@ -46,25 +59,30 @@ export default function SettingsPage({ notifier }) {
         setOptions(opts);
         setForm(settings);
         setKeywordText(settings.keywords.join(", "));
+        setSaved(normalized(settings, settings.keywords.join(", ")));
       })
       .catch((error) => setStatus((s) => ({ ...s, error })));
   }, []);
 
+  const dirty = useMemo(() => form && saved !== normalized(form, keywordText), [form, keywordText, saved]);
+
   const update = (key) => (value) => {
     setForm((f) => ({ ...f, [key]: value }));
-    setStatus((s) => ({ ...s, saved: false }));
+    setStatus((s) => ({ ...s, message: null }));
   };
 
   async function save(event) {
     event.preventDefault();
-    setStatus({ saving: true, saved: false, error: null });
+    setStatus({ saving: true, message: null, error: null });
     try {
-      const { detail, ...saved } = await api.saveSettings({ ...form, keywords: toKeywordList(keywordText) });
-      setForm(saved);
-      setKeywordText(saved.keywords.join(", "));
-      setStatus({ saving: false, saved: detail ?? "Saved", error: null });
+      const { detail, ...result } = await api.saveSettings({ ...form, keywords: toKeywordList(keywordText) });
+      const text = result.keywords.join(", ");
+      setForm(result);
+      setKeywordText(text);
+      setSaved(normalized(result, text));
+      setStatus({ saving: false, message: detail ?? "Saved", error: null });
     } catch (error) {
-      setStatus({ saving: false, saved: false, error });
+      setStatus({ saving: false, message: null, error });
     }
   }
 
@@ -72,13 +90,27 @@ export default function SettingsPage({ notifier }) {
     <div className="page-head">
       <div>
         <h1 className="large-title">Settings</h1>
-        <p className="page-sub">Choose which newly found jobs alert you</p>
+        <p className="page-sub">Decide which new jobs alert you</p>
       </div>
     </div>
   );
 
+  const appearance = (
+    <>
+      <h2 className="section-label" style={{ marginTop: 0 }}>Appearance</h2>
+      <div className="seg appearance" role="radiogroup" aria-label="Appearance">
+        {APPEARANCE.map(([value, label]) => (
+          <button key={value} type="button" role="radio" aria-checked={theme.choice === value}
+                  className={theme.choice === value ? "active" : ""} onClick={() => theme.setChoice(value)}>
+            {label}
+          </button>
+        ))}
+      </div>
+    </>
+  );
+
   if (!form || !options) {
-    return <section>{head}<ErrorBox error={status.error} />{!status.error && <Loading />}</section>;
+    return <section>{head}{appearance}<div style={{ marginTop: 32 }}><ErrorBox error={status.error} />{!status.error && <Loading />}</div></section>;
   }
 
   const { permission, requestPermission, sendTest } = notifier;
@@ -86,63 +118,62 @@ export default function SettingsPage({ notifier }) {
   return (
     <section>
       {head}
+      {appearance}
+
       <form onSubmit={save}>
-        <OptionGroup name="location" label="Locations" options={options.locations} selected={form.locations} onChange={update("locations")} />
-        <OptionGroup name="type" label="Job types" options={options.job_types} selected={form.job_types} onChange={update("job_types")} />
-        <OptionGroup name="category" label="Categories" options={options.categories} selected={form.categories} onChange={update("categories")} />
+        <ChipGroup label="Locations" options={options.locations} selected={form.locations} onChange={update("locations")}
+                   hint="Jobs in any selected location." />
+        <ChipGroup label="Job types" options={options.job_types} selected={form.job_types} onChange={update("job_types")}
+                   hint="Jobs of any selected type." />
+        <ChipGroup label="Categories" options={options.categories} selected={form.categories} onChange={update("categories")}
+                   hint="Jobs in any selected category." />
 
-        <h2 className="section-label">Keywords</h2>
+        <h2 className="section-label">Keywords and freshness</h2>
         <div className="group">
-          <input id="keywords" className="field wide-field" type="text" value={keywordText} placeholder="python, backend, machine learning"
-                 aria-label="Keywords" onChange={(e) => { setKeywordText(e.target.value); setStatus((s) => ({ ...s, saved: false })); }} />
-        </div>
-        <p className="footnote">Separate with commas. A job matches if it contains any of them. Leave empty to skip this filter.</p>
-
-        <h2 className="section-label">Freshness</h2>
-        <div className="group">
+          <input id="keywords" className="field wide-field" type="text" value={keywordText} placeholder="Keywords, e.g. python, backend"
+                 aria-label="Keywords, separated by commas" onChange={(e) => { setKeywordText(e.target.value); setStatus((s) => ({ ...s, message: null })); }} />
           <label className="row plain setting" htmlFor="max-age">
-            <span>Posted within (days)</span>
+            <span>Posted within days</span>
             <input id="max-age" className="field inline-field" type="number" min="1" max="365" placeholder="Any"
                    value={form.max_age_days ?? ""}
                    onChange={(e) => update("max_age_days")(e.target.value === "" ? null : Number(e.target.value))} />
           </label>
         </div>
-        <p className="footnote">Leave empty for no limit. Jobs without a posting date are always shown.</p>
+        <p className="footnote">A job matches if it contains any keyword. Leave either empty to skip it.</p>
 
         <h2 className="section-label">Notifications</h2>
         <div className="group">
           <label className="row plain setting" htmlFor="browser-popups">
-            <span>{HOSTED ? "Browser alerts while this page is open" : "Browser notifications"}</span>
+            <span>{HOSTED ? "Browser alerts while open" : "Browser notifications"}</span>
             <Switch id="browser-popups" checked={form.browser_notifications} onChange={update("browser_notifications")} />
           </label>
-          <div className="row plain setting" style={{ cursor: "default" }}>
-            <span className="muted">
-              {permission === "granted" && "Allowed in this browser"}
-              {permission === "default" && "Not allowed yet"}
-              {permission === "denied" && "Blocked. Allow notifications for this site from the address bar."}
-              {permission === "unsupported" && "This browser doesn't support notifications"}
-            </span>
-            {permission === "granted" && <button type="button" className="btn btn-sm" onClick={sendTest}>Send Test</button>}
-            {permission === "default" && <button type="button" className="btn btn-tinted btn-sm" onClick={requestPermission}>Allow</button>}
-          </div>
+          {permission !== "granted" && (
+            <div className="row plain setting" style={{ cursor: "default" }}>
+              <span className="muted">
+                {permission === "default" && "This browser hasn't allowed alerts yet."}
+                {permission === "denied" && "Blocked. Allow alerts for this site from the address bar."}
+                {permission === "unsupported" && "This browser doesn't support alerts."}
+              </span>
+              {permission === "default" && <button type="button" className="btn btn-sm" onClick={requestPermission}>Allow</button>}
+            </div>
+          )}
+          {permission === "granted" && (
+            <div className="row plain setting" style={{ cursor: "default" }}>
+              <span className="muted">Allowed in this browser</span>
+              <button type="button" className="btn btn-sm" onClick={sendTest}>Send Test</button>
+            </div>
+          )}
         </div>
-        <p className="footnote">
-          {HOSTED
-            ? "Telegram alerts come from the hourly scan, whether or not this page is open."
-            : "Alerts show while a Job Radar tab is open. Missed ones appear when you come back."}
-        </p>
+        {HOSTED && <p className="footnote">Telegram alerts arrive from the hourly scan whether or not this page is open.</p>}
 
         <div style={{ marginTop: 24 }}><ErrorBox error={status.error} /></div>
         <div className="save-bar">
-          <button className="btn btn-primary btn-lg" type="submit" disabled={status.saving}>
-            {status.saving ? "Saving…" : "Save"}
+          <button className="btn btn-primary btn-lg" type="submit" disabled={!dirty || status.saving}>
+            {status.saving ? "Saving…" : "Save Changes"}
           </button>
-          {status.saved && <span className="saved">{status.saved}</span>}
+          {status.message && !dirty && <span className="saved">{status.message}</span>}
         </div>
-        <p className="footnote" style={{ paddingInline: 0, marginTop: 14 }}>
-          Filters only decide which newly found jobs alert you; a job is never announced twice.
-          {HOSTED && " Saving asks for your admin password once per tab."}
-        </p>
+        {HOSTED && <p className="footnote" style={{ paddingInline: 0 }}>Saving asks for your admin password once per tab.</p>}
       </form>
     </section>
   );

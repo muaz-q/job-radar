@@ -1,15 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { Empty, ErrorBox, Loading } from "../components/Status";
 import { api, GITHUB_REPO, HOSTED } from "../services/api";
-import { timeAgo, timeUntil } from "../services/format";
+import { timeAgo } from "../services/format";
 
-const STATUS_TEXT = {
-  ok: "Active",
-  running: "Scanning",
-  warning: "Active, with problems",
-  error: "Last scan failed",
-  idle: "Not scanned yet",
-};
+const STATUS_TEXT = { ok: "Working", running: "Scanning", warning: "Partly working", error: "Not working", idle: "Waiting for first scan" };
 
 export default function SourcesPage({ refreshKey }) {
   const [sources, setSources] = useState(null);
@@ -25,43 +19,47 @@ export default function SourcesPage({ refreshKey }) {
     return () => clearInterval(timer);
   }, [load, refreshKey]);
 
+  const lastChecked = sources?.map((s) => s.last_checked_at).filter(Boolean).sort().at(-1);
+
   return (
     <section>
       <div className="page-head">
         <div>
           <h1 className="large-title">Sources</h1>
-          <p className="page-sub">{HOSTED ? "Checked every hour on GitHub" : "Checked by this computer"}</p>
+          <p className="page-sub">
+            {lastChecked ? `Checked ${timeAgo(lastChecked)}` : "Not checked yet"}
+            {HOSTED && " · every hour"}
+          </p>
         </div>
       </div>
 
       <ErrorBox error={error} onRetry={load} />
       {!sources && !error && <Loading />}
-      {sources?.length === 0 && <div className="group"><Empty title="No sources">Enable a source in config/sources.json.</Empty></div>}
+      {sources?.length === 0 && <div className="group"><Empty title="No sources">Enable one in config/sources.json.</Empty></div>}
 
       <div className="tiles">
         {sources?.map((s) => {
           const status = s.status in STATUS_TEXT ? s.status : "idle";
-          const retry = status === "error"
-            ? (HOSTED ? " · retrying next hour" : s.next_scan_at ? ` · retrying in ${timeUntil(s.next_scan_at)}` : "")
-            : "";
           return (
             <article key={s.name} className="tile">
-              <div>
+              <div className="tile-head">
                 <h3>{s.display_name}</h3>
-                <span className={`status ${status}`}>{STATUS_TEXT[status]}{retry}</span>
+                <span className={`status-dot ${status}`} title={STATUS_TEXT[status]} />
               </div>
-              <div className="big-number">
-                {s.total_jobs.toLocaleString()}
-                <small>jobs tracked</small>
+              <div>
+                <div className="big-number">{s.total_jobs.toLocaleString()}</div>
+                <div className="tile-meta">jobs tracked</div>
               </div>
-              <div className="tile-meta">
-                Checked {s.last_checked_at ? timeAgo(s.last_checked_at) : "never"}
-                <br />
-                Last scan: {s.last_fetched_count.toLocaleString()} fetched, {s.last_new_count.toLocaleString()} new
-                {s.next_scan_at && <><br />Next scan {HOSTED ? "about " : ""}in {timeUntil(s.next_scan_at)}</>}
-                {s.consecutive_failures > 0 && <><br />{s.consecutive_failures} failed scans in a row</>}
-              </div>
-              {s.last_error && <div className="tile-error">{s.last_error}</div>}
+              {/* Healthy sources say nothing more; problems say exactly what is wrong. */}
+              {status === "ok" && <div className="tile-meta">{s.last_new_count > 0 ? `${s.last_new_count} new in the last scan` : "Nothing new in the last scan"}</div>}
+              {status === "idle" && <div className="tile-meta">{STATUS_TEXT.idle}</div>}
+              {status === "running" && <div className="tile-meta">{STATUS_TEXT.running}…</div>}
+              {(status === "warning" || status === "error") && (
+                <div className={status === "error" ? "tile-meta bad" : "tile-meta warn"}>
+                  {STATUS_TEXT[status]}{s.consecutive_failures > 1 ? ` · ${s.consecutive_failures} scans in a row` : ""}
+                  {s.last_error && <><br /><span className="muted">{s.last_error}</span></>}
+                </div>
+              )}
             </article>
           );
         })}
@@ -69,10 +67,8 @@ export default function SourcesPage({ refreshKey }) {
 
       {HOSTED && (
         <p className="footnote">
-          GitHub can start hourly scans up to ~30 minutes late.{" "}
-          <a href={`https://github.com/${GITHUB_REPO}/actions/workflows/scan.yml`} target="_blank" rel="noopener noreferrer">
-            Scan runs and logs
-          </a>
+          Scans run on GitHub and can start a little late.{" "}
+          <a href={`https://github.com/${GITHUB_REPO}/actions/workflows/scan.yml`} target="_blank" rel="noopener noreferrer">View scan logs</a>
         </p>
       )}
     </section>

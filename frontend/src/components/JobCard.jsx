@@ -1,42 +1,56 @@
 import CompanyLogo from "./CompanyLogo";
-import { isFresh, safeUrl, timeAgo } from "../services/format";
+import { ArrowUpRight } from "./Icons";
+import { safeUrl, timeAgo } from "../services/format";
 
 export function postedText(job) {
   return job.posted_at ? `Posted ${timeAgo(job.posted_at)}` : `Found ${timeAgo(job.first_seen_at)}`;
 }
 
-const SOURCE_LABELS = { companies: "Careers site", unstop: "Unstop", wellfound: "Wellfound", mock: "Mock" };
+// Compact relative time for list rows: "2h", "3d", "5w".
+export function shortAge(iso, now = Date.now()) {
+  if (!iso) return "";
+  const minutes = Math.max(0, Math.round((now - new Date(iso).getTime()) / 60000));
+  if (minutes < 60) return minutes < 1 ? "now" : `${minutes}m`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) return `${hours}h`;
+  const days = Math.round(hours / 24);
+  return days < 7 ? `${days}d` : `${Math.round(days / 7)}w`;
+}
+
+const SOURCE_LABELS = { companies: "Company careers site", unstop: "Unstop", wellfound: "Wellfound", mock: "Mock" };
 export const sourceLabel = (source) => SOURCE_LABELS[source] ?? source;
 
-export function ViewJobButton({ url, size = "sm", label = "View" }) {
+export function ViewJobButton({ url }) {
   const href = safeUrl(url);
   if (!href) return null;
-  const cls = size === "lg" ? "btn btn-primary btn-lg" : "btn btn-tinted btn-sm";
   return (
-    <a className={cls} href={href} target="_blank" rel="noopener noreferrer" aria-label={size === "lg" ? undefined : "View job posting"}>
-      {label}
-    </a>
+    <a className="btn btn-accent btn-lg" href={href} target="_blank" rel="noopener noreferrer">View Job Posting</a>
   );
 }
 
-export default function JobRow({ job }) {
-  const fresh = isFresh(job.first_seen_at);
+export default function JobRow({ job, isNew }) {
+  const href = safeUrl(job.url);
+  const when = job.posted_at || job.first_seen_at;
   return (
     <div className="row link">
-      {/* Like Mail's unread dot: in the margin, so titles stay aligned */}
-      {fresh && <span className="new-dot" title="Found in the last 24 hours" />}
+      {isNew && <span className="new-dot" title="New since your last visit" />}
       <CompanyLogo company={job.company} url={job.logo_url} />
       <div className="job-text">
-        <a className="job-title" href={`#/jobs/${job.id}`}>
-          {fresh && <span className="visually-hidden">New: </span>}
-          {job.title}
-        </a>
-        <div className="job-company">{job.company}</div>
-        <div className="job-meta">
-          {[job.location ?? "Location not listed", postedText(job), job.job_type, sourceLabel(job.source)].join(" · ")}
+        <div className="job-line">
+          <a className="job-title" href={`#/jobs/${job.id}`}>
+            {isNew && <span className="visually-hidden">New: </span>}
+            {job.title}
+          </a>
+          <time className="job-time" dateTime={when} title={postedText(job)}>{shortAge(when)}</time>
         </div>
+        <div className="job-sub">{job.company} · {job.location ?? "Location not listed"}</div>
       </div>
-      <ViewJobButton url={job.url} />
+      {href && (
+        <a className="icon-btn" href={href} target="_blank" rel="noopener noreferrer"
+           aria-label={`Open the ${job.company} posting`} title="Open Posting">
+          <ArrowUpRight />
+        </a>
+      )}
     </div>
   );
 }

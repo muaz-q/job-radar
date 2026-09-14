@@ -1,11 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { SearchIcon } from "../components/Icons";
+import { FilterIcon, SearchIcon, XIcon } from "../components/Icons";
 import JobRow from "../components/JobCard";
 import { Empty, ErrorBox, SkeletonList } from "../components/Status";
 import { api } from "../services/api";
 import { timeAgo } from "../services/format";
 
 const PAGE_SIZE = 50;
+const FILTER_KEYS = [
+  { key: "source", label: "Any source", optionsKey: "sources" },
+  { key: "location", label: "Any location", optionsKey: "locations" },
+  { key: "category", label: "Any category", optionsKey: "categories" },
+];
 
 function useDebounced(value, ms = 250) {
   const [debounced, setDebounced] = useState(value);
@@ -16,19 +21,11 @@ function useDebounced(value, ms = 250) {
   return debounced;
 }
 
-function Menu({ id, label, value, onChange, options }) {
-  return (
-    <select id={id} className={value ? "menu set" : "menu"} value={value} onChange={onChange} aria-label={label}>
-      <option value="">{label}</option>
-      {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
-    </select>
-  );
-}
-
-export default function JobsPage({ refreshKey }) {
+export default function JobsPage({ refreshKey, newSince }) {
   const [view, setView] = useState("matching");
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({ source: "", location: "", category: "" });
+  const [showFilters, setShowFilters] = useState(false);
   const [options, setOptions] = useState({ sources: [], locations: [], categories: [] });
   const [jobs, setJobs] = useState({ items: [], total: 0 });
   const [loading, setLoading] = useState(true);
@@ -72,19 +69,27 @@ export default function JobsPage({ refreshKey }) {
 
   useEffect(() => { load(0); }, [load, refreshKey]);
 
-  const setFilter = (key) => (event) => setFilters((f) => ({ ...f, [key]: event.target.value }));
-  const anyFilter = q || filters.source || filters.location || filters.category;
-  const noun = view === "matching" ? (jobs.total === 1 ? "match" : "matches") : (jobs.total === 1 ? "job" : "jobs");
+  const setFilter = (key, value) => setFilters((f) => ({ ...f, [key]: value }));
+  const active = FILTER_KEYS.filter(({ key }) => filters[key]);
+  const labelFor = (key, optionsKey) => options[optionsKey].find((o) => o.value === filters[key])?.label ?? filters[key];
+  const anyFilter = q || active.length > 0;
+  const isNew = (job) => new Date(job.first_seen_at).getTime() > newSince;
+  const newCount = jobs.items.filter(isNew).length;
+
+  const summary = loading && jobs.items.length === 0
+    ? "Loading…"
+    : [
+        `${jobs.total.toLocaleString()} ${view === "matching" ? (jobs.total === 1 ? "match" : "matches") : (jobs.total === 1 ? "job" : "jobs")}`,
+        newCount > 0 && `${newCount} new`,
+        lastScan && `updated ${timeAgo(lastScan)}`,
+      ].filter(Boolean).join(" · ");
 
   return (
     <section>
       <div className="page-head">
         <div>
           <h1 className="large-title">Jobs</h1>
-          <p className="page-sub">
-            {loading && jobs.items.length === 0 ? "Loading…" : `${jobs.total.toLocaleString()} ${noun}`}
-            {lastScan && ` · last scan ${timeAgo(lastScan)}`}
-          </p>
+          <p className="page-sub">{summary}</p>
         </div>
         <div className="seg" role="tablist" aria-label="Which jobs">
           <button role="tab" aria-selected={view === "matching"} className={view === "matching" ? "active" : ""}
@@ -97,38 +102,60 @@ export default function JobsPage({ refreshKey }) {
       <div className="toolbar">
         <label className="search">
           <SearchIcon />
-          <input id="job-search" className="field" type="search" placeholder="Search title or company"
-                 value={search} maxLength={100} onChange={(e) => setSearch(e.target.value)} aria-label="Search" />
+          <input id="job-search" className="field" type="search" placeholder="Search"
+                 value={search} maxLength={100} onChange={(e) => setSearch(e.target.value)} aria-label="Search title or company" />
         </label>
-        <div className="filters">
-          <Menu id="filter-source" label="Any source" value={filters.source} onChange={setFilter("source")} options={options.sources} />
-          <Menu id="filter-location" label="Any location" value={filters.location} onChange={setFilter("location")} options={options.locations} />
-          <Menu id="filter-category" label="Any category" value={filters.category} onChange={setFilter("category")} options={options.categories} />
-        </div>
+        <button className="btn filter-toggle" onClick={() => setShowFilters((s) => !s)} aria-expanded={showFilters} aria-controls="filter-panel">
+          <FilterIcon />
+          <span>Filters</span>
+          {active.length > 0 && <span className="count">{active.length}</span>}
+        </button>
       </div>
+
+      {showFilters && (
+        <div id="filter-panel" className="panel">
+          {FILTER_KEYS.map(({ key, label, optionsKey }) => (
+            <select key={key} id={`filter-${key}`} className="menu" value={filters[key]} aria-label={label}
+                    onChange={(e) => setFilter(key, e.target.value)}>
+              <option value="">{label}</option>
+              {options[optionsKey].map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+            </select>
+          ))}
+        </div>
+      )}
+      {!showFilters && active.length > 0 && (
+        <div className="chips">
+          {active.map(({ key, optionsKey }) => (
+            <button key={key} className="chip" onClick={() => setFilter(key, "")} aria-label={`Remove filter ${labelFor(key, optionsKey)}`}>
+              {labelFor(key, optionsKey)} <XIcon />
+            </button>
+          ))}
+        </div>
+      )}
 
       <ErrorBox error={error} onRetry={() => load(0)} />
 
       {jobs.items.length > 0 && (
         <div className="group">
-          {jobs.items.map((job) => <JobRow key={job.id} job={job} />)}
+          {jobs.items.map((job) => <JobRow key={job.id} job={job} isNew={isNew(job)} />)}
         </div>
       )}
 
       {loading && jobs.items.length === 0 && <SkeletonList />}
-      {loading && jobs.items.length > 0 && <p className="footnote" style={{ textAlign: "center" }}>Loading…</p>}
       {!loading && !error && jobs.items.length === 0 && (
         <div className="group">
           {anyFilter
-            ? <Empty title="No results">Try a different search or clear a filter.</Empty>
+            ? <Empty title="No results">Try a different search or remove a filter.</Empty>
             : view === "matching"
-              ? <Empty title="No matches yet">Nothing new fits your filters. Widen them in <a href="#/settings">Settings</a>, or look through All.</Empty>
-              : <Empty title="No jobs yet">Press Scan Now to check every source.</Empty>}
+              ? <Empty title="No matches yet">Nothing new fits your filters. Adjust them in <a href="#/settings">Settings</a>, or browse All.</Empty>
+              : <Empty title="No jobs yet">They'll appear here after the next scan.</Empty>}
         </div>
       )}
-      {!loading && jobs.items.length < jobs.total && (
+      {jobs.items.length > 0 && jobs.items.length < jobs.total && (
         <div className="center">
-          <button className="btn" onClick={() => load(jobs.items.length)}>Show More</button>
+          <button className="btn" onClick={() => load(jobs.items.length)} disabled={loading}>
+            {loading ? "Loading…" : "Show More"}
+          </button>
         </div>
       )}
     </section>

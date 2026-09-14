@@ -4,7 +4,6 @@ import { ChevronLeft } from "../components/Icons";
 import { postedText, sourceLabel, ViewJobButton } from "../components/JobCard";
 import { ErrorBox, Loading } from "../components/Status";
 import { api } from "../services/api";
-import { timeAgo } from "../services/format";
 
 function Fact({ label, children }) {
   return (
@@ -35,22 +34,20 @@ export default function JobDetailPage({ id }) {
       {job && (
         <article>
           <header className="detail-head">
-            <CompanyLogo company={job.company} url={job.logo_url} size={72} />
+            <CompanyLogo company={job.company} url={job.logo_url} size={64} />
             <div>
               <h1 className="detail-title">{job.title}</h1>
               <p className="detail-company">{job.company}</p>
-              <p className="page-sub">{job.location ?? "Location not listed"} · {postedText(job)}</p>
             </div>
-            <ViewJobButton url={job.url} size="lg" label="View Job Posting" />
+            <ViewJobButton url={job.url} />
           </header>
 
           <div className="group">
+            <Fact label="Location">{job.location ?? "Not listed"}</Fact>
             <Fact label="Type">{job.job_type}</Fact>
-            <Fact label="Category">{job.category}</Fact>
             {job.compensation && <Fact label="Pay">{job.compensation}</Fact>}
-            <Fact label="Found on">{sourceLabel(job.source)}</Fact>
-            <Fact label="First seen">{timeAgo(job.first_seen_at)}</Fact>
-            <Fact label="Your filters">{job.matches_filters ? "Matches" : "Doesn't match"}</Fact>
+            <Fact label="Posted">{postedText(job).replace(/^(Posted|Found) /, "")}</Fact>
+            <Fact label="Source">{sourceLabel(job.source)}</Fact>
           </div>
 
           {job.description && (
