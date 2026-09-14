@@ -39,7 +39,7 @@ export function useTheme() {
     } catch {
       // private browsing: the choice still applies for this visit
     }
-    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", resolved === "dark" ? "#000000" : "#F5F5F7");
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", resolved === "dark" ? "#07070C" : "#F4F3F8");
   }, [choice, resolved]);
 
   // The header button flips between light and dark explicitly.

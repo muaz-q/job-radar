@@ -73,6 +73,7 @@ export default function App() {
 
   return (
     <div className="shell">
+      <div className="backdrop" aria-hidden="true" />
       <header className={barClass}>
         <a className="brand" href="#/" aria-label="Job Radar home"><RadarMark /><span>Job Radar</span></a>
         <nav className="tabs" aria-label="Sections">
