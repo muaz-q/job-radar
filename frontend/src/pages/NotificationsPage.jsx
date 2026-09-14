@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { RevealTitle } from "../components/Motion";
 import { Empty, ErrorBox, Loading } from "../components/Status";
 import { api } from "../services/api";
 import { clockTime, dayLabel, safeUrl } from "../services/format";
@@ -29,7 +30,7 @@ export default function NotificationsPage({ refreshKey }) {
     <section>
       <div className="page-head">
         <div>
-          <h1 className="large-title">History</h1>
+          <RevealTitle>History</RevealTitle>
           <p className="page-sub">
             {items ? `${items.length.toLocaleString()} alerts sent` : "Every alert Job Radar has sent"}
             {unsent > 0 && ` · ${unsent} waiting to send`}

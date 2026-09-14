@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { CheckIcon } from "../components/Icons";
+import { RevealTitle, Segmented } from "../components/Motion";
 import { ErrorBox, Loading } from "../components/Status";
 import { api, HOSTED } from "../services/api";
 
@@ -89,7 +90,7 @@ export default function SettingsPage({ notifier, theme }) {
   const head = (
     <div className="page-head">
       <div>
-        <h1 className="large-title">Settings</h1>
+        <RevealTitle>Settings</RevealTitle>
         <p className="page-sub">Decide which new jobs alert you</p>
       </div>
     </div>
@@ -98,14 +99,8 @@ export default function SettingsPage({ notifier, theme }) {
   const appearance = (
     <>
       <h2 className="section-label" style={{ marginTop: 0 }}>Appearance</h2>
-      <div className="seg appearance" role="radiogroup" aria-label="Appearance">
-        {APPEARANCE.map(([value, label]) => (
-          <button key={value} type="button" role="radio" aria-checked={theme.choice === value}
-                  className={theme.choice === value ? "active" : ""} onClick={() => theme.setChoice(value)}>
-            {label}
-          </button>
-        ))}
-      </div>
+      <Segmented className="appearance" role="radiogroup" label="Appearance" options={APPEARANCE}
+                 value={theme.choice} onChange={(value, event) => theme.setChoice(value, event)} />
     </>
   );
 

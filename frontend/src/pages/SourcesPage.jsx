@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { CountUp, RevealTitle } from "../components/Motion";
 import { Empty, ErrorBox, Loading } from "../components/Status";
 import { api, GITHUB_REPO, HOSTED } from "../services/api";
 import { timeAgo } from "../services/format";
@@ -25,7 +26,7 @@ export default function SourcesPage({ refreshKey }) {
     <section>
       <div className="page-head">
         <div>
-          <h1 className="large-title">Sources</h1>
+          <RevealTitle>Sources</RevealTitle>
           <p className="page-sub">
             {lastChecked ? `Checked ${timeAgo(lastChecked)}` : "Not checked yet"}
             {HOSTED && " · every hour"}
@@ -38,16 +39,16 @@ export default function SourcesPage({ refreshKey }) {
       {sources?.length === 0 && <div className="group"><Empty title="No sources">Enable one in config/sources.json.</Empty></div>}
 
       <div className="tiles">
-        {sources?.map((s) => {
+        {sources?.map((s, index) => {
           const status = s.status in STATUS_TEXT ? s.status : "idle";
           return (
-            <article key={s.name} className="tile">
+            <article key={s.name} className="tile enter" style={{ "--i": index }}>
               <div className="tile-head">
                 <h3>{s.display_name}</h3>
                 <span className={`status-dot ${status}`} title={STATUS_TEXT[status]} />
               </div>
               <div>
-                <div className="big-number">{s.total_jobs.toLocaleString()}</div>
+                <div className="big-number"><CountUp value={s.total_jobs} /></div>
                 <div className="tile-meta">jobs tracked</div>
               </div>
               {/* Healthy sources say nothing more; problems say exactly what is wrong. */}

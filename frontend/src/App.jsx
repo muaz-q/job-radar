@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { MoonIcon, RadarMark, SunIcon, TabHistory, TabJobs, TabSettings, TabSources } from "./components/Icons";
 import ScanButton from "./components/ScanButton";
 import { useHashRoute } from "./hooks/useHashRoute";
+import { useSlidingIndicator, useSpotlight } from "./hooks/useMotion";
 import { useNewSince } from "./hooks/useLastVisit";
 import { useNotificationPoller } from "./hooks/useNotificationPoller";
 import { useTheme } from "./hooks/useTheme";
@@ -49,6 +50,10 @@ export default function App() {
   const newSince = useNewSince();
   const scrollY = useScrollY();
   const [toast, notify] = useToast();
+  const [scanning, setScanning] = useState(false);
+  const spotlightRef = useRef(null);
+  const tabsRef = useRef(null);
+  useSpotlight(spotlightRef);
 
   const onScanned = useCallback(() => {
     refresh();
@@ -61,6 +66,7 @@ export default function App() {
   const isDetail = page === "jobs" && id;
   const title = isDetail ? "Job" : NAV.find((n) => n.key === current).label;
   const dark = theme.resolved === "dark";
+  const tabIndicator = useSlidingIndicator(tabsRef, "a.active", [current]);
 
   let content;
   if (isDetail) content = <JobDetailPage id={id} />;
@@ -73,10 +79,12 @@ export default function App() {
 
   return (
     <div className="shell">
-      <div className="backdrop" aria-hidden="true" />
+      <div className="backdrop" aria-hidden="true"><div className="aurora" /></div>
+      <div ref={spotlightRef} className="spotlight" aria-hidden="true" />
       <header className={barClass}>
-        <a className="brand" href="#/" aria-label="Job Radar home"><RadarMark /><span>Job Radar</span></a>
-        <nav className="tabs" aria-label="Sections">
+        <a className={scanning ? "brand scanning" : "brand"} href="#/" aria-label="Job Radar home"><RadarMark /><span>Job Radar</span></a>
+        <nav ref={tabsRef} className="tabs" aria-label="Sections">
+          {tabIndicator.style && <span className={tabIndicator.ready ? "tab-pill ready" : "tab-pill"} style={tabIndicator.style} aria-hidden="true" />}
           {NAV.map(({ key, label }) => (
             <a key={key} href={`#/${key}`} className={current === key ? "active" : ""}
                aria-current={current === key ? "page" : undefined}>{label}</a>
@@ -89,11 +97,12 @@ export default function App() {
                   title={dark ? "Light Appearance" : "Dark Appearance"}>
             {dark ? <SunIcon /> : <MoonIcon />}
           </button>
-          <ScanButton onScanned={onScanned} notify={notify} />
+          <ScanButton onScanned={onScanned} notify={notify} onBusyChange={setScanning} />
         </div>
       </header>
 
-      <main>{content}</main>
+      {/* Keyed by route: each screen enters with a short fade-and-rise */}
+      <main key={isDetail ? `job-${id}` : current} className="page">{content}</main>
 
       {toast && (
         <div key={toast.key} className={toast.error ? "toast error" : "toast"} role="status" aria-live="polite">

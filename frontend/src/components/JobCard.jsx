@@ -28,11 +28,11 @@ export function ViewJobButton({ url }) {
   );
 }
 
-export default function JobRow({ job, isNew }) {
+export default function JobRow({ job, isNew, index }) {
   const href = safeUrl(job.url);
   const when = job.posted_at || job.first_seen_at;
   return (
-    <div className="row link">
+    <div className={index != null && index < 14 ? "row link enter" : "row link"} style={index != null ? { "--i": Math.min(index, 13) } : undefined}>
       {isNew && <span className="new-dot" title="New since your last visit" />}
       <CompanyLogo company={job.company} url={job.logo_url} />
       <div className="job-text">

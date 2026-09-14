@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FilterIcon, SearchIcon, XIcon } from "../components/Icons";
 import JobRow from "../components/JobCard";
+import { RevealTitle, Segmented } from "../components/Motion";
 import { Empty, ErrorBox, SkeletonList } from "../components/Status";
 import { api } from "../services/api";
 import { timeAgo } from "../services/format";
@@ -88,15 +89,10 @@ export default function JobsPage({ refreshKey, newSince }) {
     <section>
       <div className="page-head">
         <div>
-          <h1 className="large-title">Jobs</h1>
+          <RevealTitle>Jobs</RevealTitle>
           <p className="page-sub">{summary}</p>
         </div>
-        <div className="seg" role="tablist" aria-label="Which jobs">
-          <button role="tab" aria-selected={view === "matching"} className={view === "matching" ? "active" : ""}
-                  onClick={() => setView("matching")}>Matches</button>
-          <button role="tab" aria-selected={view === "all"} className={view === "all" ? "active" : ""}
-                  onClick={() => setView("all")}>All</button>
-        </div>
+        <Segmented label="Which jobs" value={view} onChange={setView} options={[["matching", "Matches"], ["all", "All"]]} />
       </div>
 
       <div className="toolbar">
@@ -112,7 +108,8 @@ export default function JobsPage({ refreshKey, newSince }) {
         </button>
       </div>
 
-      {showFilters && (
+      {/* Always rendered so it can expand and collapse smoothly; inert while closed */}
+      <div className={showFilters ? "collapse open" : "collapse"} inert={showFilters ? undefined : ""}>
         <div id="filter-panel" className="panel">
           {FILTER_KEYS.map(({ key, label, optionsKey }) => (
             <select key={key} id={`filter-${key}`} className="menu" value={filters[key]} aria-label={label}
@@ -122,7 +119,7 @@ export default function JobsPage({ refreshKey, newSince }) {
             </select>
           ))}
         </div>
-      )}
+      </div>
       {!showFilters && active.length > 0 && (
         <div className="chips">
           {active.map(({ key, optionsKey }) => (
@@ -137,7 +134,7 @@ export default function JobsPage({ refreshKey, newSince }) {
 
       {jobs.items.length > 0 && (
         <div className="group">
-          {jobs.items.map((job) => <JobRow key={job.id} job={job} isNew={isNew(job)} />)}
+          {jobs.items.map((job, index) => <JobRow key={job.id} job={job} isNew={isNew(job)} index={index} />)}
         </div>
       )}
 

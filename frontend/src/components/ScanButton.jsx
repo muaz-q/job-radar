@@ -4,8 +4,9 @@ import { api } from "../services/api";
 
 // Scans run automatically, so starting one by hand is a quiet icon, not a headline button.
 // The outcome is reported through a brief toast.
-export default function ScanButton({ onScanned, notify }) {
-  const [busy, setBusy] = useState(false);
+export default function ScanButton({ onScanned, notify, onBusyChange }) {
+  const [busy, setBusyState] = useState(false);
+  const setBusy = (value) => { setBusyState(value); onBusyChange?.(value); };
 
   async function scan() {
     setBusy(true);

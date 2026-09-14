@@ -9,7 +9,7 @@ export function RadarMark() {
       <rect width="28" height="28" rx="6.5" fill="currentColor" />
       <circle cx="14" cy="14" r="8.4" strokeWidth="1.6" style={{ ...ink, opacity: 0.4 }} />
       <circle cx="14" cy="14" r="4.5" strokeWidth="1.6" style={{ ...ink, opacity: 0.7 }} />
-      <path d="M14 14l6.1-6.1" strokeWidth="2" strokeLinecap="round" style={ink} />
+      <path className="radar-needle" d="M14 14l6.1-6.1" strokeWidth="2" strokeLinecap="round" style={ink} />
       <circle cx="14" cy="14" r="1.9" style={{ fill: "var(--bg)" }} />
     </svg>
   );
@@ -86,7 +86,7 @@ export function XIcon() {
 export function CheckIcon() {
   return (
     <svg viewBox="0 0 12 12" fill="none" aria-hidden="true">
-      <path d="M2.5 6.3l2.3 2.3 4.7-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path className="check-draw" pathLength="1" d="M2.5 6.3l2.3 2.3 4.7-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }

@@ -33,7 +33,7 @@ export default function JobDetailPage({ id }) {
       {!job && !error && <Loading />}
       {job && (
         <article>
-          <header className="detail-head">
+          <header className="detail-head stagger">
             <CompanyLogo company={job.company} url={job.logo_url} size={64} />
             <div>
               <h1 className="detail-title">{job.title}</h1>
