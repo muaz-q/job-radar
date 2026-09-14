@@ -19,7 +19,8 @@ log = logging.getLogger(__name__)
 
 USER_AGENT = "JobRadar/0.1 (personal job-alert tool; hourly polling)"
 SEARCH_URL = "https://unstop.com/api/public/opportunity/search-result"
-PER_PAGE = 30
+# 100 per page: the same ~850 internships in 9 requests instead of 29 (checked 2026-09-14).
+PER_PAGE = 100
 
 
 def _parse_posted(raw: dict) -> datetime | None:

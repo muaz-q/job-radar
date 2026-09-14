@@ -10,6 +10,7 @@ company per scan; one failing company is a warning, not a failed source.
 
 import logging
 import time
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 
 import httpx
@@ -204,31 +205,63 @@ class CompaniesSource(JobSource):
                 skipped += 1
         return jobs, skipped
 
-    def fetch_jobs(self) -> FetchResult:
-        result = FetchResult()
-        client = self._client or httpx.Client(headers={"User-Agent": USER_AGENT}, timeout=self.timeout_seconds)
+    def _fetch_board_safely(self, client: httpx.Client, board: Board) -> tuple[list[NormalizedJob], int] | str:
+        """Returns (jobs, skipped) or an error message. One company can never break the others."""
         try:
-            for index, board in enumerate(self.boards):
-                if index:
+            jobs, skipped = self._fetch_board(client, board)
+        except SourceError as exc:
+            return str(exc)
+        except Exception as exc:  # a bug in one site's parser must not lose every other company
+            log.exception("companies board=%s/%s crashed", board.ats, board.slug)
+            return f"{board.ats}/{board.slug}: unexpected {type(exc).__name__}"
+        log.info("companies board=%s/%s jobs=%d skipped=%d", board.ats, board.slug, len(jobs), skipped)
+        return jobs, skipped
+
+    def fetch_jobs(self) -> FetchResult:
+        """Companies on different websites are fetched in parallel; companies sharing a website
+        (e.g. all Greenhouse boards) are fetched one after another with a pause between them."""
+        client = self._client or httpx.Client(headers={"User-Agent": USER_AGENT}, timeout=self.timeout_seconds)
+        outcomes: dict[int, tuple[list[NormalizedJob], int] | str] = {}
+        groups: dict[str, list[int]] = {}
+        for index, board in enumerate(self.boards):
+            groups.setdefault(website(board), []).append(index)
+
+        def run_group(indexes: list[int]) -> None:
+            for position, index in enumerate(indexes):
+                if position:
                     self._sleep(self.request_delay_seconds)
-                try:
-                    jobs, skipped = self._fetch_board(client, board)
-                except SourceError as exc:
-                    result.errors.append(str(exc))
-                    continue
-                except Exception as exc:  # a bug in one site's parser must not lose every other company
-                    log.exception("companies board=%s/%s crashed", board.ats, board.slug)
-                    result.errors.append(f"{board.ats}/{board.slug}: unexpected {type(exc).__name__}")
-                    continue
-                log.info("companies board=%s/%s jobs=%d skipped=%d", board.ats, board.slug, len(jobs), skipped)
-                result.jobs.extend(jobs)
-                result.skipped_records += skipped
+                outcomes[index] = self._fetch_board_safely(client, self.boards[index])
+
+        try:
+            with ThreadPoolExecutor(max_workers=min(MAX_PARALLEL_WEBSITES, len(groups) or 1),
+                                    thread_name_prefix="companies") as pool:
+                list(pool.map(run_group, groups.values()))
         finally:
             if self._client is None:
                 client.close()
+
+        result = FetchResult()
+        for index in range(len(self.boards)):  # assemble in configured order, whatever finished first
+            outcome = outcomes[index]
+            if isinstance(outcome, str):
+                result.errors.append(outcome)
+            else:
+                result.jobs.extend(outcome[0])
+                result.skipped_records += outcome[1]
         if result.errors and len(result.errors) == len(self.boards):
             raise SourceError("; ".join(result.errors))
         return result
+
+
+MAX_PARALLEL_WEBSITES = 8
+
+
+def website(board: Board) -> str:
+    """The server a board's requests go to; politeness delays apply per server."""
+    if board.ats == "workday":
+        return f"{board.host}.myworkdayjobs.com"
+    return {"greenhouse": "boards-api.greenhouse.io", "lever": "api.lever.co", "ashby": "api.ashbyhq.com",
+            "amazon": "www.amazon.jobs", "microsoft": "apply.careers.microsoft.com"}[board.ats]
 
 
 def _looks_valid(raw: object) -> bool:

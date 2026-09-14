@@ -29,12 +29,9 @@ def build_sources(config: Config, sources_file: SourcesFile | None = None) -> li
             return name in override
         return options is not None and options.enabled
 
+    # Order matters: when two sources list the same opening in one scan, the earlier source is kept.
+    # Company careers pages first, so alerts link to the official posting rather than an aggregator.
     sources: list[JobSource] = []
-    if wanted("wellfound", file.wellfound):
-        if file.wellfound is None:
-            raise ValueError("wellfound is enabled but has no settings in the sources file")
-        sources.append(WellfoundSource(file.wellfound.searches, file.wellfound.request_delay_seconds,
-                                       file.wellfound.timeout_seconds))
     if wanted("companies", file.companies):
         if file.companies is None:
             raise ValueError("companies is enabled but has no boards in the sources file")
@@ -43,6 +40,11 @@ def build_sources(config: Config, sources_file: SourcesFile | None = None) -> li
     if wanted("unstop", file.unstop):
         options = file.unstop or UnstopOptions()
         sources.append(UnstopSource(options.max_pages, options.request_delay_seconds, options.timeout_seconds))
+    if wanted("wellfound", file.wellfound):
+        if file.wellfound is None:
+            raise ValueError("wellfound is enabled but has no settings in the sources file")
+        sources.append(WellfoundSource(file.wellfound.searches, file.wellfound.request_delay_seconds,
+                                       file.wellfound.timeout_seconds))
     if wanted("mock", file.mock):
         sources.append(MockSource(emit_new_job_each_scan=file.mock.emit_new_job_each_scan
                                   or config.mock_emit_new_job_each_scan))

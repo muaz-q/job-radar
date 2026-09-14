@@ -140,6 +140,14 @@ config/               settings.json, sources.json
   - `content_key` = company + title + location, ignoring the source. It catches reposts and the same job on two sites.
 
   A job is new only if both are unseen.
+- **Reworded copies across sites are one opening.** Big companies post on their own site and on Unstop
+  with rewritten titles. Same company + same job type + same meaningful title words ("internship" = "intern",
+  seasons/years ignored) + compatible locations, from a *different* source, within 120 days = duplicate.
+  Replaying the live history: 16 merges, all genuine, removing 5 of 115 alerts. Same-site postings with
+  distinct ids are never merged (companies post one title as separate per-city jobs).
+- **Sources are fetched in parallel, politely.** Different websites run at the same time; requests to the
+  same website stay sequential with a pause. Company careers pages are processed first, so a duplicate
+  keeps the official link. Measured scan time: 288 s → 51 s.
 - **Save, then send.** The workflow saves scan results before sending Telegram messages, and saves again
   after. A crash can at worst retry unsent alerts; it never loses or duplicates a job.
 - **`data` branch = one force-pushed commit**, so an hourly database doesn't bloat git history.

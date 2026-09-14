@@ -6,6 +6,8 @@ other sources or crashes the app. The next scheduled scan is the retry.
 
 import logging
 import threading
+import time
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from urllib.parse import urlsplit
 
@@ -73,7 +75,10 @@ class Scanner:
             raise ScanInProgress()
         try:
             started = utcnow()
-            results = [self.scan_source(source) for source in self.sources]
+            outcomes = self._fetch_all()
+            # Processing stays sequential and in configured order: database writes are single-threaded,
+            # and when two sources list the same opening, the earlier source's link is the one kept.
+            results = [self._finish(source, outcome) for source, outcome in outcomes]
             if self.deliver_after_scan:
                 try:
                     with self.db.session() as session:
@@ -84,20 +89,35 @@ class Scanner:
         finally:
             self._lock.release()
 
-    def scan_source(self, source: JobSource) -> SourceScanSummary:
-        log.info("scan started source=%s", source.name)
+    def _fetch_all(self) -> list[tuple[JobSource, FetchResult | Exception]]:
+        """Fetch every source at the same time. Sources are different websites, so running them in
+        parallel costs no politeness: each adapter still spaces out requests to its own site."""
         with self.db.session() as session:
-            state = get_source_state(session, source.name)
-            state.status = "running"
+            for source in self.sources:
+                get_source_state(session, source.name).status = "running"
             session.commit()
 
-        try:
-            fetched = source.fetch_jobs()
-        except Exception as exc:  # SourceError or anything unexpected inside an adapter
-            return self._record_failure(source, exc)
+        def fetch(source: JobSource) -> FetchResult | Exception:
+            started = time.monotonic()
+            log.info("scan started source=%s", source.name)
+            try:
+                return source.fetch_jobs()
+            except Exception as exc:  # SourceError or anything unexpected inside an adapter
+                return exc
+            finally:
+                log.info("fetch finished source=%s seconds=%.1f", source.name, time.monotonic() - started)
 
+        if not self.sources:
+            return []
+        with ThreadPoolExecutor(max_workers=len(self.sources), thread_name_prefix="fetch") as pool:
+            outcomes = list(pool.map(fetch, self.sources))  # map keeps the configured order
+        return list(zip(self.sources, outcomes))
+
+    def _finish(self, source: JobSource, outcome: FetchResult | Exception) -> SourceScanSummary:
+        if isinstance(outcome, Exception):
+            return self._record_failure(source, outcome)
         try:
-            return self._process(source, fetched)
+            return self._process(source, outcome)
         except Exception as exc:
             log.exception("processing failed source=%s", source.name)
             return self._record_failure(source, exc)
@@ -142,8 +162,9 @@ class Scanner:
             session.commit()
 
         log.info(
-            "scan finished source=%s fetched=%d new=%d duplicates=%d matching=%d notifications=%d errors=%d",
-            source.name, len(fetched.jobs), len(new_models), dedup.duplicates, len(matching), sent, len(errors),
+            "scan finished source=%s fetched=%d new=%d duplicates=%d (reworded=%d) matching=%d notifications=%d errors=%d",
+            source.name, len(fetched.jobs), len(new_models), dedup.duplicates, dedup.similar, len(matching), sent,
+            len(errors),
         )
         return SourceScanSummary(
             source=source.name, status=state.status, fetched=len(fetched.jobs), new=len(new_models),
